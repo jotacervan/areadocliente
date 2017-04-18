@@ -2,9 +2,11 @@ class HomeController < ApplicationController
   def index
   	if session[:user_id].nil?
   		redirect_to login_path, alert: 'Faça o login para continuar'
-  	end
-  	@current_user = User.find(session[:user_id])
-  	@backlogs = Backlog.order(created_at: :desc)
+  	else
+      @current_user = User.find(session[:user_id])
+      @backlogs = Backlog.order(created_at: :desc)
+    end
+  	
   end
 
   def login
