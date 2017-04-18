@@ -1,0 +1,76 @@
+<%= form_for @user do |f| %>
+ 
+  <% if @user.errors.any? %>
+    <div id="alert alert-danger text-center">
+      <h4>
+        <%= pluralize(@user.errors.count, "error") %> Impediram esse usuário de ser criado
+      </h4>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+ <div class="row">
+  <div class="col-md-6">
+    <p>
+      <%= f.label :nome %><br>
+      <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+    </p>
+    <p>
+      <%= f.label :email %><br>
+      <%= f.text_field :email, :class => 'form-control', :placeholder => 'Email' %>
+    </p>
+    <p>
+      <%= f.label :telefone %><br>
+      <%= f.text_field :phone, :class => 'form-control', :placeholder => 'Telefone' %>
+    </p>
+    <p>
+      <%= f.label :senha %><br>
+      <%= f.password_field :password, :class => 'form-control', :placeholder => 'Senha' %>
+    </p>
+
+    <p>
+      <%= f.label :confirmação_de_senha %><br>
+      <%= f.password_field :password_confirmation, :class => 'form-control', :placeholder => 'Confirmação de Senha' %>
+    </p>
+  </div>
+  <div class="col-md-6">
+    <p>
+      <%= f.label :rg %><br>
+      <%= f.text_field :rg, :class => 'form-control', :placeholder => 'RG' %>
+    </p>
+
+    <p>
+      <%= f.label :cpf %><br>
+      <%= f.text_field :cpf, :class => 'form-control', :placeholder => 'CPF' %>
+    </p>
+
+    <p>
+      <%= f.label :login %><br>
+      <%= f.text_field :login, :class => 'form-control', :placeholder => 'Login' %>
+    </p> 
+
+    <p>
+      <%= f.label :tipo_de_usuário %><br>
+      <%= f.select(:user_type, {}, {}, { :class => 'form-control', :placeholder => 'Tipo de Usuário'}) do %>
+        <%= content_tag(:option, 'Usuário', value: 'User') %>
+        <%= content_tag(:option, 'Super Usuário', value: 'superUser') %>
+      <% end %>
+    </p>
+    <p>
+      <%= f.label :cliente %><br>
+      <%= f.select(:client_id, {}, {}, {:class => 'form-control'}) do %>
+        <%= content_tag(:option, 'Administrator', value: '0') %>
+      <% end %>
+    </p>
+  </div>
+ </div>
+ 
+  <p>
+    <%= f.submit( {:class => 'btn btn-primary'}) %>
+  </p>
+ 
+<% end %>

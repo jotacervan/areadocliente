@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Mobile2you | Perfil de Usuário</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+  <style type="text/css">
+    .profile-user-img:hover{
+      opacity:0.5;
+      cursor:pointer;
+    }
+  </style>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <%= render 'header' %>
+  
+  <%= render 'sidebar' %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Perfil de Usuário
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Perfil</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" data-toggle="modal" data-target="#profile" src="<%= @current_user.picture.url(:thumb) %>" alt="User profile picture">
+
+              <h3 class="profile-username text-center"><%= @current_user.name %></h3>
+
+              <p class="text-muted text-center">Usuário desde <%= @current_user.created_at.strftime('%d de %h, %Y') %></p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Empresa</b> 
+                  <% if @current_user.client.nil? %>
+                    <span class="pull-right">Administrador</span>
+                  <% else %>
+                    <span class="pull-right"><%= @current_user.client.name %></span>
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+          <!-- About Me Box -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Sobre Mim</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong><i class="fa fa-envelope margin-r-5"></i> Email</strong>
+
+              <p class="text-muted">
+                <%= @current_user.email %>
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-user margin-r-5"></i> Login</strong>
+
+              <p class="text-muted"><%= @current_user.login %></p>
+
+              <hr>
+
+              <strong><i class="fa fa-phone margin-r-5"></i> Phone</strong>
+
+              <p class="text-muted"><%= @current_user.phone %></p>
+
+              <hr>
+
+              <strong><i class="fa fa-file-text margin-r-5"></i> RG</strong>
+
+              <p class="text-muted"><%= @current_user.rg %></p>
+
+              <hr>
+
+              <strong><i class="fa fa-file-text margin-r-5"></i> CPF</strong>
+
+              <p class="text-muted"><%= @current_user.cpf %></p>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#timeline" data-toggle="tab">Sua Timeline</a></li>
+              <li><a href="#settings" data-toggle="tab">Editar Informações</a></li>
+              <li><a href="#password" data-toggle="tab">Alterar Senha</a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- /.tab-pane -->
+              <div class=" active tab-pane" id="timeline">
+                <!-- The timeline -->
+                <ul class="timeline timeline-inverse">
+                  <% @current_user.backlogs.order(created_at: :desc).each do |b| %>
+                     <!-- timeline time label -->
+                    <li class="time-label">
+                          <span class="bg-blue">
+                            <%= b.created_at.strftime('%d %h, %Y') %>
+                          </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                      <i class="fa fa-gear bg-blue"></i>
+
+                      <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> <%= b.created_at.strftime('%H:%I') %></span>
+
+                        <h3 class="timeline-header"><%= b.description %></h3>
+
+                      </div>
+                    </li>
+                    <!-- END timeline item -->
+                  <% end %>
+                 
+                  
+                  <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="settings">
+                <%= form_for :user, url: profile_user_update_path do |f| %>
+                  <%= f.hidden_field :id %>
+                 <div class="row">
+                  <div class="col-md-6">
+                    <p>
+                      <%= f.label :nome %><br>
+                      <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+                    </p>
+                    <p>
+                      <%= f.label :email %><br>
+                      <%= f.text_field :email, :class => 'form-control', :placeholder => 'Email' %>
+                    </p>
+                    <p>
+                      <%= f.label :telefone %><br>
+                      <%= f.text_field :phone, :class => 'form-control', :placeholder => 'Telefone' %>
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>
+                      <%= f.label :rg %><br>
+                      <%= f.text_field :rg, :class => 'form-control', :placeholder => 'RG' %>
+                    </p>
+
+                    <p>
+                      <%= f.label :cpf %><br>
+                      <%= f.text_field :cpf, :class => 'form-control', :placeholder => 'CPF' %>
+                    </p>
+
+                    <p>
+                      <%= f.label :login %><br>
+                      <%= f.text_field :login, :class => 'form-control', :placeholder => 'Login' %>
+                    </p> 
+                  </div>
+                 </div>
+                 
+                  <p>
+                    <%= f.submit 'Editar Informações', :class => 'btn btn-primary' %>
+                  </p>
+                 
+                <% end %>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="password">
+                <%= form_for :user, url: profile_password_update_path do |f| %>
+                  <%= f.hidden_field :id %>
+                 <div class="row">
+                  <div class="col-md-6">
+                    <p>
+                      <%= f.label :senha_atual %><br>
+                      <%= f.password_field :atual, :class => 'form-control', :placeholder => 'Senha Atual' %>
+                    </p>
+                    <p>
+                      <%= f.label :senha %><br>
+                      <%= f.password_field :password, :class => 'form-control', :placeholder => 'Senha' %>
+                    </p>
+                    <p>
+                      <%= f.label :confirmação_de_senha %><br>
+                      <%= f.password_field :password_confirmation, :class => 'form-control', :placeholder => 'Confirme sua Senha' %>
+                    </p>
+                  </div>
+                 </div>
+                 
+                  <p>
+                    <%= f.submit 'Editar Informações', :class => 'btn btn-primary' %>
+                  </p>
+                 
+                <% end %>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.3.8
+    </div>
+    <strong>Copyright &copy; 2017 <a href="http://mobile2you.com.br">Mobile2You</a>.</strong> All rights
+    reserved.
+  </footer>
+
+ 
+</div>
+
+<div id="profile" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Imagem de Perfil</h4>
+      </div>
+      <%= form_for :user, url: profile_pic_update_path do |f| %>
+      <div class="modal-body">
+        <%= f.hidden_field :id %>
+        <%= f.file_field :picture %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <%= f.submit 'Alterar Imagem', :class => 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ./wrapper -->
+    <% if flash[:alert] %>
+        <div id="flash" class="modal modal-warning fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Alerta</h4>
+              </div>
+              <div class="modal-body">
+                <p><%= flash[:alert] %></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fechar</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    <% end %>
+
+<!-- jQuery 2.2.3 -->
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/dist/js/demo.js"></script>
+
+<% if flash[:alert] %>
+  <script type="text/javascript">
+    $(function(){
+      $('#flash').modal('show');
+    });
+  </script>
+<% end %>
+
+</body>
+</html>

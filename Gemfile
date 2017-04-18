@@ -21,6 +21,19 @@ gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 gem 'mongoid'
+gem 'omniauth-facebook' # Facebook authentication
+gem "koala", "~> 1.10.0rc" # Facebook API
+gem 'rest-client'
+gem 'better_errors'
+gem 'binding_of_caller'
+gem 'will_paginate_mongoid'
+gem "mongo_session_store-rails3"
+gem "paranoia", "~> 2.2"
+gem 'mongoid_paranoia'
+gem "mongoid-paperclip", :require => "mongoid_paperclip"
+gem 'paperclip'
+gem 'bcrypt'
+gem 'bson_ext'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

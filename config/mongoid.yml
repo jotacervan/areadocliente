@@ -5,7 +5,7 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      uri: "mongodb://heroku_0z5nr9tn:o0lte6ss1eiidl4fkj9hiai8v2@ds161950.mlab.com:61950/heroku_0z5nr9tn"
+      uri: "mongodb://administrator:q1w2e3r4t5y6u7i8o9p0@ds161950.mlab.com:61950/heroku_0z5nr9tn"
       #database: areadocliente_development
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
