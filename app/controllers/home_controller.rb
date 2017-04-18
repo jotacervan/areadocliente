@@ -6,7 +6,6 @@ class HomeController < ApplicationController
       @current_user = User.find(session[:user_id])
       @backlogs = Backlog.order(created_at: :desc)
     end
-  	
   end
 
   def login
@@ -29,9 +28,10 @@ class HomeController < ApplicationController
   def profile
     if session[:user_id].nil?
       redirect_to login_path, alert: 'Faça o login para continuar'
+    else
+      @current_user = User.find(session[:user_id])
+      @user = User.find(session[:user_id])
     end
-    @current_user = User.find(session[:user_id])
-    @user = User.find(session[:user_id])
   end
 
   def profile_user_update

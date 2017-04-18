@@ -2,37 +2,41 @@ class UsersController < ApplicationController
 
 	def index 
 		if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
+  			redirect_to login_path, alert: 'Faça o login para continuar'
+	  	else
+		  	@current_user = User.find(session[:user_id])
+		  	@users = User.all
 	  	end
-	  	@current_user = User.find(session[:user_id])
-	  	@users = User.all
 	end
 
 	def new
 		if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
+  			redirect_to login_path, alert: 'Faça o login para continuar'
+	  	else
+		  	@current_user = User.find(session[:user_id])
+		  	@user = User.new
+		  	@users = User.all
 	  	end
-	  	@current_user = User.find(session[:user_id])
-	  	@user = User.new
-	  	@users = User.all
 	end
 
 	def edit
 		if session[:user_id].nil?
   		redirect_to login_path, alert: 'Faça o login para continuar'
+	  	else
+		  	@user = User.find(params[:id])
+		  	@current_user = User.find(session[:user_id])
+		  	@users = User.all
 	  	end
-	  	@user = User.find(params[:id])
-	  	@current_user = User.find(session[:user_id])
-	  	@users = User.all
 	end
 
 	def show
 		if session[:user_id].nil?
   		redirect_to login_path, alert: 'Faça o login para continuar'
+	  	else
+		  	@user = User.find(params[:id])
+		  	@current_user = User.find(session[:user_id])
+		  	@users = User.all
 	  	end
-	  	@user = User.find(params[:id])
-	  	@current_user = User.find(session[:user_id])
-	  	@users = User.all
 	end
 
 	def update
