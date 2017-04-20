@@ -14,6 +14,11 @@ class HomeController < ApplicationController
   	end
   end
 
+  def sign_out
+    session[:user_id] = nil
+    redirect_to login_path
+  end
+
   def signin
   	@user = User.where(:login => params[:login][:login]).first
 

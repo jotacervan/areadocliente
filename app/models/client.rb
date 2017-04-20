@@ -13,6 +13,6 @@ class Client
   field :city, type: String
   field :state, type: String
   field :country, type: String
-
+  
   has_many :users
 end

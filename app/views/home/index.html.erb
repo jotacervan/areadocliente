@@ -143,7 +143,7 @@
                 </tr>
                 <tr>
                   <td>1.</td>
-                  <td>Update software</td>
+                  <td>Atualizar Software</td>
                   <td>Administrador</td>
                   <td>
                     <div class="progress progress-xs">
@@ -154,7 +154,7 @@
                 </tr>
                 <tr>
                   <td>2.</td>
-                  <td>Clean database</td>
+                  <td>Limpar Banco de Dados</td>
                   <td>Administrador</td>
                   <td>
                     <div class="progress progress-xs">
@@ -165,7 +165,7 @@
                 </tr>
                 <tr>
                   <td>3.</td>
-                  <td>Cron job running</td>
+                  <td>Api</td>
                   <td>Administrador</td>
                   <td>
                     <div class="progress progress-xs progress-striped active">
@@ -176,7 +176,7 @@
                 </tr>
                 <tr>
                   <td>4.</td>
-                  <td>Fix and squish bugs</td>
+                  <td>Consertar bugs</td>
                   <td>Administrador</td>
                   <td>
                     <div class="progress progress-xs progress-striped active">
@@ -190,6 +190,40 @@
           </div>
           <!-- /.box -->
           
+
+          <!-- USERS LIST -->
+              <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Ultimos Usuários</h3>
+
+                  <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                  <ul class="users-list clearfix">
+                  <% usuarios = User.order(created_at: :desc) %>
+                    <% usuarios.take(8).each do |u| %>
+                      <li>
+                      <img src="<%= u.picture.url(:thumb) %>" style="width:128px; height:128px" alt="User Image">
+                      <a class="users-list-name" href="#"><%= u.name %></a>
+                      <span class="users-list-date"><%= u.created_at.strftime('%d %h') %></span>
+                    </li>
+                    <% end %>
+                  </ul>
+                  <!-- /.users-list -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer text-center">
+                  <a href="<%= users_path %>" class="uppercase">Ver Todos os Usuários</a>
+                </div>
+                <!-- /.box-footer -->
+              </div>
+              <!--/.box -->
         </div>
 
 
@@ -207,7 +241,7 @@
                   <th>Usuário</th>
                   <th>Data</th>
                 </tr>
-                <% @backlogs.take(5).each_with_index do |b,key| %>
+                <% @backlogs.take(11).each_with_index do |b,key| %>
                   <tr>
                     <td><%= key %></td>
                     <td><%= b.description %></td>
@@ -227,6 +261,8 @@
 
       </div>
       <!-- /.row (main row) -->
+
+      
 
     </section>
     <!-- /.content -->

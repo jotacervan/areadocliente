@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 	      render 'edit'
 	    end
 	  end
-
+	  
 	def create
 		
 		if params[:user][:client_id] == '0'
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
 	def destroy
 	    @user = User.find(params[:id])
 	    @current_user = User.find(session[:user_id])
-	 	@current_user.backlogs.create(:description => 'Deletou do usuário ' + @user.name)
+	 	@current_user.backlogs.create(:description => 'Excluiu do usuário ' + @user.name)
 	 	
 	    @user.destroy
 
