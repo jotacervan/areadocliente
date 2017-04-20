@@ -149,7 +149,7 @@
                 <img src="<%= @current_user.picture.url(:thumb) %>" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce
+                  <%= @current_user.name %>
                   <small>Membro desde <%= @current_user.created_at.strftime('%d de %b, %Y') %></small>
                 </p>
               </li>
