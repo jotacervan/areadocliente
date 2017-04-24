@@ -16,6 +16,7 @@ class UsersController < ApplicationController
 		  	@current_user = User.find(session[:user_id])
 		  	@user = User.new
 		  	@users = User.all
+		  	@clients = Client.all
 	  	end
 	end
 
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
 		  	@user = User.find(params[:id])
 		  	@current_user = User.find(session[:user_id])
 		  	@users = User.all
+		  	@clients = Client.all
 	  	end
 	end
 
@@ -47,31 +49,26 @@ class UsersController < ApplicationController
 	      @current_user.backlogs.create(:description => 'Atualização do usuário ' + @user.name)
 	      redirect_to users_path
 	    else
+	      @clients = Client.all
 	      render 'edit'
 	    end
 	  end
 	  
 	def create
 		
-		if params[:user][:client_id] == '0'
-			@user = User.new(user_params)
-			@current_user = User.find(session[:user_id])
+		@user = User.new(user_params)
 
-			if @user.save(validate: false)
-				@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
-				redirect_to users_path
+		if @user.save
+			@current_user = User.find(session[:user_id])
+			@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
+			if(params[:user][:redirect] == 'clients')
+				redirect_to client_path(@user.client)
 			else
-				render 'new'
+				redirect_to @user	
 			end
 		else
-			@client = Client.find(params[:user][:client_id])
-
-			if @client.users.create(user_params)
-				@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
-				redirect_to @user
-			else
-				render 'new'
-			end
+			@clients = Client.all
+			render 'new'
 		end
 
 		
@@ -80,7 +77,7 @@ class UsersController < ApplicationController
 	def destroy
 	    @user = User.find(params[:id])
 	    @current_user = User.find(session[:user_id])
-	 	@current_user.backlogs.create(:description => 'Excluiu do usuário ' + @user.name)
+	 	@current_user.backlogs.create(:description => 'Exclusão do usuário ' + @user.name)
 	 	
 	    @user.destroy
 
@@ -89,7 +86,7 @@ class UsersController < ApplicationController
 
 	private
 		def user_params
-			params.require(:user).permit(:name,:email,:phone,:rg,:cpf,:password,:password_confirmation,:picture,:login,:user_type)
+			params.require(:user).permit(:name,:email,:phone,:rg,:cpf,:password,:password_confirmation,:picture,:login,:user_type,:client_id)
 		end
 
 end

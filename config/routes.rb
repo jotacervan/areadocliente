@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
   
-  get 'clients/index'
-
   root 'home#index'
 
   resources :users
   resources :clients
+  resources :cores
+  resources :stages
+  resources :hops
 
   get 'login' => 'home#login', as: :login
   post 'signin' => 'home#signin', as: :signin

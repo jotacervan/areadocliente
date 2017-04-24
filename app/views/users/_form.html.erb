@@ -31,7 +31,6 @@
       <%= f.label :senha %><br>
       <%= f.password_field :password, :class => 'form-control', :placeholder => 'Senha' %>
     </p>
-
     <p>
       <%= f.label :confirmação_de_senha %><br>
       <%= f.password_field :password_confirmation, :class => 'form-control', :placeholder => 'Confirmação de Senha' %>
@@ -52,7 +51,7 @@
       <%= f.label :login %><br>
       <%= f.text_field :login, :class => 'form-control', :placeholder => 'Login' %>
     </p> 
-
+    
     <p>
       <%= f.label :tipo_de_usuário %><br>
       <%= f.select(:user_type, {}, {}, { :class => 'form-control', :placeholder => 'Tipo de Usuário'}) do %>
@@ -63,7 +62,9 @@
     <p>
       <%= f.label :cliente %><br>
       <%= f.select(:client_id, {}, {}, {:class => 'form-control'}) do %>
-        <%= content_tag(:option, 'Administrator', value: '0') %>
+        <% @clients.each do |c| %>
+          <%= content_tag(:option, c.name, value: c.id) %>
+        <% end %>
       <% end %>
     </p>
   </div>

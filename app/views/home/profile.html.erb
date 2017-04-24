@@ -135,7 +135,7 @@
               <div class=" active tab-pane" id="timeline">
                 <!-- The timeline -->
                 <ul class="timeline timeline-inverse">
-                  <% @current_user.backlogs.order(created_at: :desc).each do |b| %>
+                  <% @current_user.backlogs.order(created_at: :desc).limit(10).each do |b| %>
                      <!-- timeline time label -->
                     <li class="time-label">
                           <span class="bg-blue">
@@ -145,7 +145,7 @@
                     <!-- /.timeline-label -->
                     <!-- timeline item -->
                     <li>
-                      <i class="fa fa-gear bg-blue"></i>
+                      <i class="fa fa-clock-o bg-blue"></i>
 
                       <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> <%= b.created_at.strftime('%H:%I') %></span>

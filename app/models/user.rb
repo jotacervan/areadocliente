@@ -19,7 +19,7 @@ class User
   has_secure_password
   
   belongs_to :client
-  has_many :backlogs
+  has_many :backlogs, dependent: :destroy
   
   has_mongoid_attached_file :picture, :styles => { :medium => "320x320>", :thumb => "160x160#" },
                       :path => ':rails_root/public/images/:id-:basename-:style.:extension',

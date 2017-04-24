@@ -14,5 +14,6 @@ class Client
   field :state, type: String
   field :country, type: String
   
-  has_many :users
+  has_many :users, dependent: :destroy
+  has_many :cores, dependent: :destroy
 end

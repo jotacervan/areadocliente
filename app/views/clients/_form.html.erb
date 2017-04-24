@@ -1,0 +1,119 @@
+<%= form_for @client do |f| %>
+ 
+  <% if @client.errors.any? %>
+    <div id="alert alert-danger text-center">
+      <h4>
+        <%= pluralize(@client.errors.count, "error") %> Impediram esse usuário de ser criado
+      </h4>
+      <ul>
+        <% @client.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+ <div class="row">
+  <div class="col-md-6">
+    <p>
+      <%= f.label :nome %><br>
+      <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+    </p>
+    <p>
+      <%= f.label :CEP %><br>
+      <%= f.text_field :zip, :class => 'form-control', :placeholder => 'CEP' %>
+    </p>
+    <p>
+      <%= f.label :bairro %><br>
+      <%= f.text_field :neighborhood, :class => 'form-control', :placeholder => 'Bairro' %>
+    </p>
+     <div class="row">
+      <div class="col-md-6">
+        <p>
+          <%= f.label :estado %><br>
+          <%= f.text_field :state, :class => 'form-control', :placeholder => 'Estado' %>
+        </p>    
+      </div>
+      <div class="col-md-6">
+        <p>
+          <%= f.label :cidade %><br>
+          <%= f.text_field :city, :class => 'form-control', :placeholder => 'Cidade' %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <%= f.label :telefone %><br>
+          <%= f.text_field :phone, :class => 'form-control', :placeholder => 'Telefone' %>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p>
+          <%= f.label :número_da_proposta %><br>
+          <%= f.text_field :contract, :class => 'form-control', :placeholder => 'Proposta' %>
+        </p>
+      </div>
+    </div>
+    <p>
+      <%= f.label :endereço %><br>
+      <%= f.text_field :street, :class => 'form-control', :placeholder => 'Endereço' %>
+    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <%= f.label :número %><br>
+          <%= f.text_field :number, :class => 'form-control', :placeholder => 'Número' %>
+        </p>    
+      </div>
+      <div class="col-md-6">
+        <p>
+          <%= f.label :complemento %><br>
+          <%= f.text_field :complement, :class => 'form-control', :placeholder => 'Complemento' %>
+        </p>
+      </div>
+    </div>
+    <p>
+      <%= f.label :país %><br>
+      <%= f.text_field :country, :class => 'form-control', :placeholder => 'País' %>
+    </p>
+
+  </div>
+ </div>
+ 
+  <p>
+    <%= f.submit( {:class => 'btn btn-primary'}) %>
+  </p>
+ 
+<% end %>
+
+<script type="text/javascript">
+  $(function(){
+
+    $('#client_zip').mask('99999-999');
+    $('#client_phone').mask('(99) 9999-9999?9');
+
+    $('#client_zip').on('focusout', function(){
+      var cep = $(this).val().replace('-','');
+      $.ajax({
+        url: 'https://viacep.com.br/ws/'+cep+'/json/',
+        dataType: 'JSON'
+      }).done(function(data){
+        console.log('Sucesso');
+        $('#client_neighborhood').val(data.bairro).click();
+        $('#client_street').val(data.logradouro).click();
+        $('#client_state').val(data.uf).click();
+        $('#client_city').val(data.localidade).click();
+        $('#client_country').val('Brasil').click();
+        console.log(data);
+      }).fail(function(data){
+        console.log('Fail');
+        alert('CEP Não Encontrado');
+        console.log(data);
+      });
+    });
+
+  });
+</script>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Mobile2you | Novo Usuário</title>
+  <title>Mobile2you | Ver Projeto</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -50,38 +50,106 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Novo Usuário
-        
+        <%= @core.name %>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="/user" ><i class="fa fa-dashboard"></i> Usuários</a></li>
-        <li class="active">Novo Usuário</li>
+        <li><a href="/user" ><i class="fa fa-dashboard"></i> Projeto</a></li>
+        <li class="active">Ver Projeto</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
       
-      <!-- Main row -->
       <div class="row">
-       <div class="col-xs-12">
-          
-          <div class="box">
+        <div class="col-md-12">
+          <div class="box box-danger">
             <div class="box-header">
-              <h3 class="box-title">Novo Usuário</h3>
+              <h3 class="box-title">Estágios</h3>
+              <a href="#novo-estagio" data-toggle="modal" class="btn btn-danger btn-sm pull-right"> <i class="fa fa-plus"></i> &nbsp; Novo Estágio</a>
+
+
+              <div id="novo-estagio" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Novo Estágio para <%= @core.name %></h4>
+                    </div>
+                    <div class="modal-body">
+                      <%= form_for @stage do |f| %>
+                      
+                       <div class="row">
+                        <div class="col-md-12">
+                          <p>
+                            <%= f.label :nome %><br>
+                            <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+                          </p>
+                          
+                        </div>
+                       </div>
+                          
+                        <%= f.hidden_field :core_id, :value => @core.id %>
+                        
+                        <p>
+                          <%= f.submit( {:class => 'btn btn-primary'}) %>
+                        </p>
+                        
+                      <% end %>
+                    </div>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
-              <%= render 'form' %>
+              <table class="table table-bordered">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Projeto</th>
+                  <th>Progresso</th>
+                  <th style="width: 40px">Label</th>
+                  <th style="width:115px"></th>
+
+                </tr>
+                <% @core.stages.each_with_index do |c,key| 
+
+                  if c.stages.length > 0
+                  else
+                    percentil = 0
+                  end
+                %>
+                <tr>
+                  <td><%= key %>.</td>
+                  <td><%= c.name %></td>
+                  <td>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar progress-bar-danger" style="width: <%= percentil %>%"></div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-red"><%= percentil %>%</span></td>
+                  <td>
+                    <div class="btn-group">
+                          <button type="button" class="btn btn-default">Opções</button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="<%= core_path(c.id) %>"><i class="fa fa-eye"></i> Visualizar</a></li>
+                              <li><a href="#edit-core-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Projeto</a></li>
+                              <li><a href="<%= core_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o projeto <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar projeto</a></li>
+                          </ul>
+                      </div>
+                  </td>
+                </tr>
+                <% end %>
+              </table> 
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
-
       </div>
-      <!-- /.row (main row) -->
-
+      <!-- /. row ( main-row ) -->
     </section>
     <!-- /.content -->
   </div>

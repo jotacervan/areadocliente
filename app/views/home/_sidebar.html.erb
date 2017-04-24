@@ -26,27 +26,11 @@
       <ul class="sidebar-menu">
         <li class="header">PRINCIPAL</li>
         <li class="treeview">
-          <a href="#">
+          <a href="<%= root_path %>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<%= root_path %>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa fa-user"></i> Dashboard Cliente</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-comments"></i>
-            <span>Chat</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">8</span>
-            </span>
           </a>
         </li>
-        <li class="treeview">
+        <li <% if request.fullpath == '/clients' || request.fullpath == '/clients/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Clientes</span>
@@ -55,8 +39,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-user-plus"></i> Novo Cliente</a></li>
-            <li><a href="<%= clients_path %>"><i class="fa fa-user"></i> Ver Clientes</a></li>
+            <li <% if request.fullpath == '/clients/new' %> class="active" <% end %> ><a href="<%= new_client_path %>"><i class="fa fa-user-plus"></i> Novo Cliente</a></li>
+            <li <% if request.fullpath == '/clients' %> class="active" <% end %> ><a href="<%= clients_path %>"><i class="fa fa-user"></i> Ver Clientes</a></li>
           </ul>
         </li>
         <li <% if request.fullpath == '/users' || request.fullpath == '/users/new' %> class="active treeview" <% else %> class="treeview" <% end %> >

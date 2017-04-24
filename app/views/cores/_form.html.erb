@@ -1,0 +1,36 @@
+<%= form_for @core do |f| %>
+ 
+  <% if @core.errors.any? %>
+    <div id="alert alert-danger text-center">
+      <h4>
+        <%= pluralize(@core.errors.count, "error") %> Impediram esse usuário de ser criado
+      </h4>
+      <ul>
+        <% @core.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+ <div class="row">
+  <div class="col-md-6">
+    <p>
+      <%= f.label :nome %><br>
+      <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+    </p>
+    
+  </div>
+  <div class="col-md-6">
+        <p>
+          <%= f.label :descrição %><br>
+          <%= f.text_field :description, :class => 'form-control', :placeholder => 'Descrição' %>
+        </p>
+  </div>
+ </div>
+ 
+  <p>
+    <%= f.submit( {:class => 'btn btn-primary'}) %>
+  </p>
+ 
+<% end %>
