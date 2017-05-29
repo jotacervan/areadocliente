@@ -1,5 +1,19 @@
 Rails.application.routes.draw do
-  
+
+  get 'hops/index'
+
+  get 'hops/create'
+
+  get 'hops/new'
+
+  get 'hops/edit'
+
+  get 'hops/show'
+
+  get 'hops/update'
+
+  get 'hops/destroy'
+
   root 'home#index'
 
   resources :users
@@ -7,7 +21,7 @@ Rails.application.routes.draw do
   resources :cores
   resources :stages
   resources :hops
-
+  
   get 'login' => 'home#login', as: :login
   post 'signin' => 'home#signin', as: :signin
   get 'sign_out' => 'home#sign_out', as: :sign_out

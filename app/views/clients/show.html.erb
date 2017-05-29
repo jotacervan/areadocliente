@@ -257,7 +257,23 @@
                 </tr>
                 <% @client.cores.each_with_index do |c,key| 
 
-                  if c.stages.length > 0
+                  if c.stages.count > 0
+
+                    percentil = 0
+                    total = 0
+                    c.stages.each do |s|
+                      if s.hops.count > 0
+
+                        s.hops.each do |h|
+                          total += h.status
+                        end
+
+                        total = total / s.hops.count
+                      end
+                    end
+
+                    percentil = total / c.stages.count
+
                   else
                     percentil = 0
                   end

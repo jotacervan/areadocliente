@@ -6,7 +6,7 @@ class CoresController < ApplicationController
   def new
     render json: 'new'
   end
-
+  
   def show
     if session[:user_id].nil?
       redirect_to login_path, alert: 'Faça o login para continuar'

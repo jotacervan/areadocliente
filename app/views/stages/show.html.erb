@@ -50,11 +50,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <%= @core.name %>
+        <%= @stage.name %>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="/user" ><i class="fa fa-dashboard"></i> Projeto</a></li>
-        <li class="active">Ver Projeto</li>
+        <li><a href="/user" ><i class="fa fa-dashboard"></i> Estágios</a></li>
+        <li class="active">Ver Estágio</li>
       </ol>
     </section>
 
@@ -65,9 +65,9 @@
         <div class="col-md-12">
           <div class="box box-danger">
             <div class="box-header">
-              <h3 class="box-title">Estágios</h3>
-              <a href="#novo-estagio" data-toggle="modal" class="btn btn-danger btn-sm pull-right"> <i class="fa fa-plus"></i> &nbsp; Novo Estágio</a>
-              <a href="<%= client_path(@core.client) %>" style="margin:0 10px" class="btn btn-primary btn-sm pull-right"> <i class="fa fa-mail-reply"></i> &nbsp; Voltar para <%= @core.client.name %></a>
+              <h3 class="box-title">Passos</h3>
+              <a href="#novo-estagio" data-toggle="modal" class="btn btn-danger btn-sm pull-right"> <i class="fa fa-plus"></i> &nbsp; Novo Passo</a>
+              <a href="<%= core_path(@stage.core) %>" style="margin:0 10px" class="btn btn-primary btn-sm pull-right"> <i class="fa fa-mail-reply"></i> &nbsp; Voltar para <%= @stage.core.name %></a>
 
 
               <div id="novo-estagio" class="modal fade" tabindex="-1" role="dialog">
@@ -75,10 +75,10 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Novo Estágio para <%= @core.name %></h4>
+                      <h4 class="modal-title">Novo Passo para <%= @stage.name %></h4>
                     </div>
                     <div class="modal-body">
-                      <%= form_for @stage do |f| %>
+                      <%= form_for @hop do |f| %>
                         
                         <div class="row">
                           <div class="col-md-12">
@@ -86,11 +86,29 @@
                               <%= f.label :nome %><br>
                               <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
                             </p>
-                          
+                            <p>
+                              <%= f.label :status %>
+                              <%= f.number_field :status, :class => 'form-control', :placeholder => 'Status' %>
+                            </p>
+                            <p>
+                              <%= f.check_box :recursive %> &nbsp;
+                              <%= f.label :recursive %>
+                            </p>
+                            <p>
+                              <%= f.label :próximo_passo %>
+                              <%= f.select(:next_stage, {}, {}, {:class => 'form-control'}) do %>
+                                <%= content_tag(:option, 'Selecione o Estágio', value: 'não') %>
+                                <% @stages.each do |s| %>
+                                  <% if @stage.name != s.name %>
+                                    <%= content_tag(:option, s.name, value: s.id) %>
+                                  <% end %>
+                                <% end %>
+                              <% end %>
+                            </p>
                           </div>
                         </div>
-                          
-                        <%= f.hidden_field :core_id, :value => @core.id %>
+                        
+                        <%= f.hidden_field :stage_id, :value => @stage.id %>
                         
                         <p>
                           <%= f.submit( {:class => 'btn btn-primary'}) %>
@@ -107,37 +125,27 @@
               <table class="table table-bordered">
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Estágio</th>
-                  <th>Passsos</th>
+                  <th>Passo</th>
+                  <th>Recursivo</th>
                   <th>Progresso</th>
                   <th style="width: 40px">Label</th>
                   <th style="width:115px"></th>
                 </tr>
 
-                <% @core.stages.each_with_index do |c,key| 
+                <% @stage.hops.each_with_index do |c,key| 
 
-                  if c.hops.count > 0
-                    total = 0
-                    c.hops.each do |h|
-                      total += h.status
-                    end
-
-                    percentil = total / c.hops.count
-                  else
-                    percentil = 0
-                  end
                 %>
 
                 <tr>
                   <td><%= key %>.</td>
                   <td><%= c.name %></td>
-                  <td><%= c.hops.count %></td>
+                  <td><%= c.recursive %></td>
                   <td>        
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: <%= percentil %>%"></div>
+                      <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
                     </div>
                   </td>
-                  <td><span class="badge bg-red"><%= percentil %>%</span></td>
+                  <td><span class="badge bg-red"><%= c.status %>%</span></td>
                   <td>
                     <div class="btn-group">
                           <button type="button" class="btn btn-default">Opções</button>

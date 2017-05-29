@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 		  	@users = User.all
 	  	end
 	end
-
+	
 	def update
 	    @user = User.find(params[:id])
 	    @current_user = User.find(session[:user_id])
