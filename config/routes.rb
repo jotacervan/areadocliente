@@ -21,8 +21,8 @@ Rails.application.routes.draw do
 
   namespace :webservices do
 
-    get 'hops/new'
-    get 'hops/edit'
+    post 'hops/new'
+    post 'hops/edit'
     get 'hops/show'
     get 'hops/show_all'
 

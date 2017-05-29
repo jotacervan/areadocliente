@@ -170,7 +170,7 @@
                       <h4 class="modal-title">Novo Passo para <%= @stage.name %></h4>
                     </div>
                     <div class="modal-body">
-                      <%= form_for :hop, url: 'api/hop/edit' do |f| %>
+                      <%= form_for :hop, :html => { :class => 'edit_hop' }, url: '/webservices/hops/edit' do |f| %>
                         
                         <div class="row">
                           <div class="col-md-12">
@@ -277,6 +277,33 @@
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js"></script>
 
+<script type="text/javascript">
+  
+  $(function(){
+
+    $('.edit_hop').on('submit', function(e){
+      
+      var data = $(this).serialize();
+
+      $.ajax({
+        method: 'POST',
+        url: '/webservices/hops/edit',
+        data: data,
+        dataType: 'JSON'
+      }).done(function(data){
+        console.log('Success');
+        console.log(data);
+      }).fail(function(data){
+        console.log('Error');
+        console.log(data);
+      });
+
+      e.preventDefault();
+    });
+
+  });
+
+</script>
 
 </body>
 </html>
