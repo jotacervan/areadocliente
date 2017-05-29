@@ -3,7 +3,7 @@ class Hop
   include Mongoid::Timestamps
 
   field :name, type: String
-  field :status, type: Integer
+  field :status, type: Integer, default: 0
   field :recursive, type: Mongoid::Boolean
   field :next_stage, type: String
 

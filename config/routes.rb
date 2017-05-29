@@ -1,18 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'hops/index'
-
-  get 'hops/create'
-
-  get 'hops/new'
-
-  get 'hops/edit'
-
-  get 'hops/show'
-
-  get 'hops/update'
-
-  get 'hops/destroy'
+  apipie
 
   root 'home#index'
 
@@ -21,7 +9,7 @@ Rails.application.routes.draw do
   resources :cores
   resources :stages
   resources :hops
-  
+
   get 'login' => 'home#login', as: :login
   post 'signin' => 'home#signin', as: :signin
   get 'sign_out' => 'home#sign_out', as: :sign_out
@@ -29,5 +17,16 @@ Rails.application.routes.draw do
   post 'profile_user_update' => 'home#profile_user_update', as: :profile_user_update
   post 'profile_pic_update' => 'home#profile_pic_update', as: :profile_pic_update
   post 'profile_password_update' => 'home#profile_password_update', as: :profile_password_update
+
+
+  namespace :webservices do
+
+    get 'hops/new'
+    get 'hops/edit'
+    get 'hops/show'
+    get 'hops/show_all'
+
+  end
+  
 
 end

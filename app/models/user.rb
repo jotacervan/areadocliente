@@ -18,7 +18,7 @@ class User
 
   has_secure_password
   
-  belongs_to :client
+  belongs_to :client, optional: true
   has_many :backlogs, dependent: :destroy
   
   has_mongoid_attached_file :picture, :styles => { :medium => "320x320>", :thumb => "160x160#" },

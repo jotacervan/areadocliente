@@ -37,6 +37,8 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tag %>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -132,14 +134,12 @@
                   <th style="width:115px"></th>
                 </tr>
 
-                <% @stage.hops.each_with_index do |c,key| 
-
-                %>
-
+                <% @stage.hops.each_with_index do |c,key| %>
+                
                 <tr>
                   <td><%= key %>.</td>
                   <td><%= c.name %></td>
-                  <td><%= c.recursive %></td>
+                  <td><% if c.recursive %> Sim <% else %> Não <% end %></td>
                   <td>        
                     <div class="progress progress-xs">
                       <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
@@ -154,13 +154,73 @@
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
-                              <li><a href="<%= stage_path(c.id) %>"><i class="fa fa-eye"></i> Visualizar</a></li>
-                              <li><a href="#edit-stage-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Projeto</a></li>
-                              <li><a href="<%= core_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Estágio <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar projeto</a></li>
+                              <li><a href="#edit-hop-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Passo</a></li>
+                              <li><a href="<%= hop_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Passo <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Passo</a></li>
                           </ul>
                       </div>
                   </td>
                 </tr>
+
+
+                <div id="edit-hop-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title">Novo Passo para <%= @stage.name %></h4>
+                    </div>
+                    <div class="modal-body">
+                      <%= form_for :hop, url: 'api/hop/edit' do |f| %>
+                        
+                        <div class="row">
+                          <div class="col-md-12">
+                            <p>
+                              <%= f.label :nome %><br>
+                              <%= f.text_field :name, :class => 'form-control', :value => c.name %>
+                            </p>
+                            <p>
+                              <%= f.label :status %>
+                              <%= f.number_field :status, :class => 'form-control', :value => c.status %>
+                            </p>
+                            <p>
+                              <% if c.recursive %>
+                                <%= f.check_box :recursive, :checked => true %> &nbsp;
+                              <% else %>
+                                <%= f.check_box :recursive %> &nbsp;
+                              <% end %>
+                              <%= f.label :recursive %>
+                            </p>
+                            <p>
+                              <%= f.label :próximo_passo %>
+                              <%= f.select(:next_stage, {}, {}, {:class => 'form-control'}) do %>
+                                <%= content_tag(:option, 'Selecione o Estágio', value: 'não') %>
+                                <% @stages.each do |s| %>
+                                  <% if @stage.name != s.name %>
+                                    <% if s.id.to_s == c.next_stage %>
+                                      <%= content_tag(:option, s.name, value: s.id, :selected => 'selected') %>
+                                    <% else %>
+                                      <%= content_tag(:option, s.name, value: s.id) %>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                              <% end %>
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <%= f.hidden_field :stage_id, :value => @stage.id %>
+                        
+                        <p>
+                          <%= f.submit( {:class => 'btn btn-primary'}) %>
+                        </p>
+                        
+                      <% end %>
+                    </div>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+
+
                 <% end %>
               </table> 
             </div>

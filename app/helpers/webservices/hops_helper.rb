@@ -1,0 +1,2 @@
+module Webservices::HopsHelper
+end

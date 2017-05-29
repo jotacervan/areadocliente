@@ -4,25 +4,30 @@ class HopsController < ApplicationController
 
   def create
 
-    # @hop = Hop.new(hop_params)
-
-    # if @hop.save
-    #   redirect_to stage_path(params[:hop][:stage_id]), notice: 'Passo Cadastrado com Sucesso'
-    # else
-    #   redirect_to stage_path(params[:hop][:stage_id]), notice: 'Erro ao Cadastrar Passo'
-    # end
-
     if params[:hop][:recursive] == '1'
       if params[:hop][:next_stage] == 'não'
         redirect_to stage_path(params[:hop][:stage_id]), notice: 'Para ser recursivo você precisa escolhar o próximo estágio'
       else
-        
+        @hop = Hop.new(hop_params)
+
+        if @hop.save
+          redirect_to stage_path(params[:hop][:stage_id]), notice: 'Passo Cadastrado com Sucesso'
+        else
+          redirect_to stage_path(params[:hop][:stage_id]), notice: 'Erro ao Cadastrar Passo'
+        end
       end
     else
-      render json: 'não'
+      
+      @hop = Hop.new(hop_params)
+
+      if @hop.save
+        redirect_to stage_path(params[:hop][:stage_id]), notice: 'Passo Cadastrado com Sucesso'
+      else
+        redirect_to stage_path(params[:hop][:stage_id]), notice: 'Erro ao Cadastrar Passo'
+      end
+
     end
 
-    
   end
 
   def new
@@ -38,7 +43,10 @@ class HopsController < ApplicationController
   end
 
   def destroy
-    #
+    hop = Hop.find(params[:id])
+    stage = hop.stage.id
+    hop.destroy()
+    redirect_to stage_path(stage)
   end
 
   private

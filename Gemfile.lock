@@ -40,6 +40,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
+    apipie-rails (0.5.1)
+      rails (>= 4.1)
     arel (7.1.4)
     bcrypt (3.1.11)
     better_errors (2.1.1)
@@ -236,6 +238,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  apipie-rails
   bcrypt
   better_errors
   binding_of_caller
@@ -267,4 +270,4 @@ DEPENDENCIES
   will_paginate_mongoid
 
 BUNDLED WITH
-   1.14.6
+   1.15.0
