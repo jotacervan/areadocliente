@@ -1,10 +1,24 @@
 class HomeController < ApplicationController
   def index
-  	if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
-  	else
-      @current_user = User.find(session[:user_id])
-      @backlogs = Backlog.order(created_at: :desc)
+  	user_authenticate
+    if @current_user.user_type == 'User'
+      redirect_to client_dashboard_path
+    end
+    @backlogs = Backlog.order(created_at: :desc)
+    @updates = Hop.order(created_at: :desc).limit(5)
+  end
+
+  def client
+    user_authenticate
+    if @current_user.user_type != 'User'
+      redirect_to root_path
+    end
+  end
+
+  def client_projects
+    user_authenticate
+    if @current_user.user_type != 'User'
+      redirect_to root_path
     end
   end
 
@@ -31,12 +45,8 @@ class HomeController < ApplicationController
   end
 
   def profile
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
-      @current_user = User.find(session[:user_id])
-      @user = User.find(session[:user_id])
-    end
+    user_authenticate
+    @user = User.find(session[:user_id])
   end
 
   def profile_user_update

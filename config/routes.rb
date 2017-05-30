@@ -18,7 +18,11 @@ Rails.application.routes.draw do
   post 'profile_pic_update' => 'home#profile_pic_update', as: :profile_pic_update
   post 'profile_password_update' => 'home#profile_password_update', as: :profile_password_update
 
-
+  # CLIENT ROUTES
+  get 'client_dashboard' => 'home#client', as: :client_dashboard
+  get 'client_projects/:id' => 'home#client_projects', as: :client_projects
+  # CLIENT ROUTES
+  
   namespace :webservices do
 
     post 'hops/new'

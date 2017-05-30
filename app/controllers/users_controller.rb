@@ -70,7 +70,7 @@ class UsersController < ApplicationController
 			@clients = Client.all
 			render 'new'
 		end
-
+		
 		
 	end
 

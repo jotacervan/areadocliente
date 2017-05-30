@@ -9,7 +9,7 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/plugins/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -127,61 +127,45 @@
             <div class="box-body">
               <table class="table table-bordered">
                 <tr>
-                  <th style="width: 10px">#</th>
                   <th>Tarefa</th>
-                  <th>Usuário</th>
+                  <th>Estágio</th>
+                  <th>Projeto</th>
+                  <th>Cliente</th>
                   <th>Progresso</th>
                   <th style="width: 40px">Percentil</th>
                 </tr>
-                <tr>
-                  <td>1.</td>
-                  <td>Atualizar Software</td>
-                  <td>Administrador</td>
+                <% @updates.each do |u| %>
+                  <tr>
+                  <td><%= u.name %></td>
+                  <td><%= u.stage.name %></td>
+                  <td><%= u.stage.core.name %></td>
+                  <td><%= u.stage.core.client.name %></td>
                   <td>
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                      <% if u.status < 33 %>
+                        <div class="progress-bar progress-bar-danger" style="width: <%= u.status %>%"></div>
+                      <% elsif u.status < 66 %>
+                        <div class="progress-bar progress-bar-warning" style="width: <%= u.status %>%"></div>
+                      <% else %>
+                        <div class="progress-bar progress-bar-success" style="width: <%= u.status %>%"></div>
+                      <% end %>
                     </div>
                   </td>
-                  <td><span class="badge bg-red">55%</span></td>
-                </tr>
-                <tr>
-                  <td>2.</td>
-                  <td>Limpar Banco de Dados</td>
-                  <td>Administrador</td>
                   <td>
-                    <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                    </div>
+                    <% if u.status < 33 %>
+                      <span class="badge bg-red"><%= u.status %>%</span>
+                    <% elsif u.status < 66 %>
+                      <span class="badge bg-orange"><%= u.status %>%</span>
+                    <% else %>
+                      <span class="badge bg-green"><%= u.status %>%</span>
+                    <% end %>
                   </td>
-                  <td><span class="badge bg-yellow">70%</span></td>
                 </tr>
-                <tr>
-                  <td>3.</td>
-                  <td>Api</td>
-                  <td>Administrador</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-light-blue">30%</span></td>
-                </tr>
-                <tr>
-                  <td>4.</td>
-                  <td>Consertar bugs</td>
-                  <td>Administrador</td>
-                  <td>
-                    <div class="progress progress-xs progress-striped active">
-                      <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-                    </div>
-                  </td>
-                  <td><span class="badge bg-green">90%</span></td>
-                </tr>
+                <% end %>
               </table>
             </div>
           </div>
           <!-- /.box -->
-          
 
           <!-- USERS LIST -->
               <div class="box box-danger">

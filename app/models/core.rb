@@ -4,7 +4,8 @@ class Core
 
   field :name, type: String
   field :description, type: String
-
+  field :status, type: Integer, default: 0
+  
   belongs_to :client
   has_many :stages, dependent: :destroy
 end

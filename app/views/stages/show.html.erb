@@ -9,7 +9,7 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/plugins/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -89,7 +89,7 @@
                               <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
                             </p>
                             <p>
-                              <%= f.label :status %>
+                              <%= f.label :status_de_0_a_100 %>
                               <%= f.number_field :status, :class => 'form-control', :placeholder => 'Status' %>
                             </p>
                             <p>
@@ -129,23 +129,39 @@
                   <th style="width: 10px">#</th>
                   <th>Passo</th>
                   <th>Recursivo</th>
+                  <th>Aprovação</th>
                   <th>Progresso</th>
                   <th style="width: 40px">Label</th>
                   <th style="width:115px"></th>
                 </tr>
 
-                <% @stage.hops.each_with_index do |c,key| %>
+                <% @stage.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
                 <tr>
                   <td><%= key %>.</td>
                   <td><%= c.name %></td>
                   <td><% if c.recursive %> Sim <% else %> Não <% end %></td>
+                  <td><% if c.approved %> <label class="label labe-success">Aprovado</label> <% else %> <label class="label label-warning">Pendente</label> <% end %></td>
                   <td>        
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
+                      <% if c.status < 33 %>
+                        <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
+                      <% elsif c.status < 66 %>
+                        <div class="progress-bar progress-bar-warning" style="width: <%= c.status %>%"></div>
+                      <% else %>
+                        <div class="progress-bar progress-bar-success" style="width: <%= c.status %>%"></div>
+                      <% end %>
                     </div>
                   </td>
-                  <td><span class="badge bg-red"><%= c.status %>%</span></td>
+                  <td>
+                    <% if c.status < 33 %>
+                      <span class="badge bg-red"><%= c.status %>%</span>
+                    <% elsif c.status < 66 %>
+                      <span class="badge bg-orange"><%= c.status %>%</span>
+                    <% else %>
+                      <span class="badge bg-green"><%= c.status %>%</span>
+                    <% end %>
+                  </td>
                   <td>
                     <div class="btn-group">
                           <button type="button" class="btn btn-default">Opções</button>
@@ -167,7 +183,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Novo Passo para <%= @stage.name %></h4>
+                      <h4 class="modal-title">Editar <%= c.name %></h4>
                     </div>
                     <div class="modal-body">
                       <%= form_for :hop, :html => { :class => 'edit_hop' }, url: '/webservices/hops/edit' do |f| %>
@@ -179,7 +195,7 @@
                               <%= f.text_field :name, :class => 'form-control', :value => c.name %>
                             </p>
                             <p>
-                              <%= f.label :status %>
+                              <%= f.label :status_de_0_a_100 %>
                               <%= f.number_field :status, :class => 'form-control', :value => c.status %>
                             </p>
                             <p>
@@ -207,7 +223,7 @@
                             </p>
                           </div>
                         </div>
-                        
+                        <%= f.hidden_field :id, :value => c.id %>
                         <%= f.hidden_field :stage_id, :value => @stage.id %>
                         
                         <p>
@@ -283,6 +299,8 @@
 
     $('.edit_hop').on('submit', function(e){
       
+      $('body').prepend('<div id="overlay" style="position:fixed; z-index:999999; display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:rgba(0,0,0,0.5); color:#fff;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+
       var data = $(this).serialize();
 
       $.ajax({
@@ -291,6 +309,8 @@
         data: data,
         dataType: 'JSON'
       }).done(function(data){
+        alert(data.message);
+        location.reload();
         console.log('Success');
         console.log(data);
       }).fail(function(data){

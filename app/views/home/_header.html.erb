@@ -20,14 +20,21 @@
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label <% if @current_user.notifications.count > 0 %> label-warning <% else %> label-default <% end %>"><%= @current_user.notifications.count %></span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">Você tem 10 notificações</li>
+              <li class="header">Você tem <%= pluralize(@current_user.notifications.count, 'Notificação', 'Notificações') %></li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li>
+                  <% @current_user.notifications.each do |n| %>
+                    <li>
+                      <a href="#" data-toggle="tooltip" data-placement="left" title="<%= n.description %>">
+                        <i class="fa <%= n.icon %>"></i> <%= n.description %>
+                      </a>
+                    </li>
+                  <% end %>
+                  <!-- <li>
                     <a href="#">
                       <i class="fa fa-users text-aqua"></i> 5 new members joined today
                     </a>
@@ -52,10 +59,9 @@
                     <a href="#">
                       <i class="fa fa-user text-red"></i> You changed your username
                     </a>
-                  </li>
+                  </li> -->
                 </ul>
               </li>
-              <li class="footer"><a href="#">Ver Todas</a></li>
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->

@@ -9,7 +9,7 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/plugins/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -116,19 +116,7 @@
                   <th style="width:115px"></th>
                 </tr>
 
-                <% @core.stages.each_with_index do |c,key| 
-
-                  if c.hops.count > 0
-                    total = 0
-                    c.hops.each do |h|
-                      total += h.status
-                    end
-
-                    percentil = total / c.hops.count
-                  else
-                    percentil = 0
-                  end
-                %>
+                <% @core.stages.order(created_at: :asc).each_with_index do |c,key| %>
 
                 <tr>
                   <td><%= key %>.</td>
@@ -136,10 +124,24 @@
                   <td><%= c.hops.count %></td>
                   <td>        
                     <div class="progress progress-xs">
-                      <div class="progress-bar progress-bar-danger" style="width: <%= percentil %>%"></div>
+                      <% if c.status < 33 %>
+                        <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
+                      <% elsif c.status < 66 %>
+                        <div class="progress-bar progress-bar-warning" style="width: <%= c.status %>%"></div>
+                      <% else %>
+                        <div class="progress-bar progress-bar-success" style="width: <%= c.status %>%"></div>
+                      <% end %>
                     </div>
                   </td>
-                  <td><span class="badge bg-red"><%= percentil %>%</span></td>
+                  <td>
+                    <% if c.status < 33 %>
+                      <span class="badge bg-red"><%= c.status %>%</span>
+                    <% elsif c.status < 66 %>
+                      <span class="badge bg-orange"><%= c.status %>%</span>
+                    <% else %>
+                      <span class="badge bg-green"><%= c.status %>%</span>
+                    <% end %>
+                  </td>
                   <td>
                     <div class="btn-group">
                           <button type="button" class="btn btn-default">Opções</button>

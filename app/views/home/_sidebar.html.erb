@@ -26,10 +26,11 @@
       <ul class="sidebar-menu">
         <li class="header">PRINCIPAL</li>
         <li class="treeview">
-          <a href="<%= root_path %>">
+          <a href="<% if @current_user.user_type == 'User' %><%= client_dashboard_path %><% else %><%= root_path %><% end %>">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
+        <% if @current_user.user_type != 'User' %>
         <li <% if request.fullpath == '/clients' || request.fullpath == '/clients/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
           <a href="#">
             <i class="fa fa-users"></i>
@@ -62,6 +63,23 @@
             <span>Backlog</span>
           </a>
         </li>
+        <% else %>
+          <li <% if request.fullpath == '/client_projects' || request.fullpath == '/users/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
+            <a href="#">
+              <i class="fa fa-users"></i>
+              <span>Projetos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <% @current_user.client.cores.each do |c| %>
+                <li <% if request.fullpath == '/client_projects/'+c.id %> class="active" <% end %> ><a href="<%= client_projects_path(c.id) %>"><i class="fa fa-user-plus"></i> <%= c.name %></a></li>
+              <% end %>
+              
+            </ul>
+          </li>
+        <% end %>
       </ul>
     </section>
     <!-- /.sidebar -->
