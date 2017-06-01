@@ -29,7 +29,7 @@
                 <ul class="menu">
                   <% @current_user.notifications.each do |n| %>
                     <li>
-                      <a href="#" data-toggle="tooltip" data-placement="left" title="<%= n.description %>">
+                      <a href="<%= n.link %>" data-toggle="tooltip" data-placement="left" title="<%= n.description %>">
                         <i class="fa <%= n.icon %>"></i> <%= n.description %>
                       </a>
                     </li>

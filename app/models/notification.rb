@@ -4,6 +4,7 @@ class Notification
 
   field :description, type: String
   field :icon, type: String
-
+  field :link, type: String
+  
   belongs_to :user
 end

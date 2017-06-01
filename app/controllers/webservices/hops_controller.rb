@@ -12,19 +12,14 @@ class Webservices::HopsController < ApplicationController
 		user_authenticate
 		
 		if @current_user.nil?
-
 			render json: { :message => 'Faça o login para continuar.' }, :status => 302
-
 		else
-
 			hop = Hop.find(params[:hop][:id])
-
 			if hop.update(hop_params)
 				render json: { :message => hop.name + ' atualizado com sucesso' }, :status => 200
 			else
 				render json: { :message => 'Erro ao atualizar.' }, :status => 200
 			end	
-
 		end	
 	end
 

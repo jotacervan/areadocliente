@@ -8,6 +8,7 @@ class Hop
   field :recursive, type: Mongoid::Boolean
   field :next_stage, type: String
   field :approved, type: Mongoid::Boolean, default: false
+  field :has_image, type: Mongoid::Boolean, default: false
   field :picture_file_name, type: String
   field :picture_file_size, type: Integer
   field :picture_content_type, type: String
@@ -17,7 +18,7 @@ class Hop
   has_mongoid_attached_file :picture, :styles => { :medium => "320x320>", :thumb => "160x160#" },
                       :path => ':rails_root/public/images/:id-:basename-:style.:extension',
                       :url => '/images/:id-:basename-:style.:extension'
-  validates_attachment_size :picture, :less_than => 5.megabytes
+  validates_attachment_size :picture, :less_than => 10.megabytes
   validates_attachment_content_type :picture, :content_type => ['image/jpeg', 'image/png', 'image/jpg']
 
   after_update :update_stage_status
@@ -35,6 +36,17 @@ class Hop
     end
 
     self.stage.update(:status => percentil)
+
+    if self.status == 100
+      self.send_approve_notification
+    end
+
+  end
+
+  def send_approve_notification
+    self.stage.core.client.users.each do |u|
+      u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/profile')
+    end
   end
 
 end

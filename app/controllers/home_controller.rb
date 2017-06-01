@@ -1,25 +1,26 @@
 class HomeController < ApplicationController
   def index
   	user_authenticate
-    if @current_user.user_type == 'User'
-      redirect_to client_dashboard_path
-    end
     @backlogs = Backlog.order(created_at: :desc)
     @updates = Hop.order(created_at: :desc).limit(5)
+    if !@current_user.nil? && @current_user.user_type == 'User'
+      redirect_to client_dashboard_path
+    end
   end
 
   def client
     user_authenticate
-    if @current_user.user_type != 'User'
+    if !@current_user.nil? && @current_user.user_type != 'User'
       redirect_to root_path
     end
   end
 
   def client_projects
     user_authenticate
-    if @current_user.user_type != 'User'
+    if !@current_user.nil? && @current_user.user_type != 'User'
       redirect_to root_path
     end
+    @project = Core.find(params[:id])
   end
 
   def login

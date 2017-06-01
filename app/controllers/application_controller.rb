@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   	if session[:user_id].nil?
       redirect_to login_path, alert: 'Faça o login para continuar'
     else
-        @current_user = User.find(session[:user_id])
+      @current_user = User.find(session[:user_id])
     end
   end
 

@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="/plugins/iCheck/flat/blue.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-
+  <link rel="stylesheet" href="/dist/css/css.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -41,12 +41,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Projetos
+        <%= @project.name %>
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<%= root_path %>" ><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Projetos</li>
+        <li class="active"><%= @project.name %></li>
       </ol>
     </section>
     
@@ -54,89 +54,135 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-6">
-          <div class="row">
-            <div class="col-lg-6 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-yellow">
-                <div class="inner">
-                  <h3><%= @current_user.client.users.count %></h3>
+        <div class="col-md-4">
+          <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
+            <% if s.status < 33 
+                color = 'bg-red'
+               elsif s.status < 66 
+                color = 'bg-yellow'
+              else 
+                color = 'bg-green'
+              end %>
+            <!-- Info Boxes Style 2 -->
+            <div class="info-box stage-name <%= color %> <% if key == 0 %> active <% end %>" name-id="<%= s.id %>" >
+              <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
 
-                  <p>Usuários</p>
+              <div class="info-box-content">
+                <span class="info-box-text"><%= s.name %></span>
+                <span class="info-box-number"><%= s.status %> %</span>
+
+                <div class="progress">
+                  <div class="progress-bar" style="width: <%= s.status %>%;"></div>
                 </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
+                    <span class="progress-description pull-right">
+                      Detalhes >
+                  </span>
               </div>
+              <!-- /.info-box-content -->
             </div>
-            <!-- ./col -->
-            <div class="col-lg-6 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-red">
-                <div class="inner">
-                  <h3><%= @current_user.client.cores.count %></h3>
-
-                  <p>Projetos</p>
-                </div>
-                <div class="icon">
-                  <i class="fa fa-file-text"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-          </div>
-          <!-- ./row -->
-
-
-          <!-- USERS LIST -->
-              <div class="box box-danger">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Usuários</h3>
-
-                  <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <ul class="users-list clearfix">
-                    <% @current_user.client.users.each do |u| %>
-                      <li>
-                      <img src="<%= u.picture.url(:thumb) %>" style="width:128px; height:128px" alt="User Image">
-                      <a class="users-list-name" href="#"><%= u.name %></a>
-                      <span class="users-list-date"><%= u.created_at.strftime('%d %h') %></span>
-                    </li>
-                    <% end %>
-                  </ul>
-                  <!-- /.users-list -->
-                </div>
-              </div>
-              <!--/.box -->
-
+            <!-- /.info-box -->
+          <% end %>
+           
         </div>
-        <div class="col-md-6">
-          <div class="box">
+        <div class="col-md-8">
+          <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
+          <div class="box stage-content <% if key != 0 %> hidden-box <% end %>" content-id="<%= s.id %>" >
             <div class="box-header with-border">
-              <h3 class="box-title">Visão Geral</h3>
+              <h3 class="box-title"><%= s.name %></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <div class="row">
-                <% @current_user.client.cores.each_with_index do |c,index| %>
-                  <div class="col-md-4 text-center">
+              <table class="table table-bordered">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Passo</th>
+                  <th>Imagem</th>
+                  <th>Aprovação</th>
+                  <th>Progresso</th>
+                  <th style="width: 40px">Label</th>
+                  <th style="width:115px"></th>
+                </tr>
 
-                    <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
+                <% s.hops.order(created_at: :asc).each_with_index do |c,key| %>
+                
+                <tr>
+                  <td><%= key %>.</td>
+                  <td><%= c.name %></td>
+                  <td>
+                    <% if c.has_image %>
+                    <% else %>
+                    Não Possui
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if c.approved %> 
+                      <label class="label labe-success">Aprovado</label> 
+                    <% else %>
+                      <% if c.status == 100 %> 
+                        <button type="button" data-toggle="modal" data-target="#terms-<%= c.id %>" class="btn btn-success btn-sm">Aprovar</button>
+                      <% else %>
+                        <label class="label label-warning">Bloqueado</label> 
+                      <% end %>
+                    <% end %></td>
+                  <td>        
+                    <div class="progress progress-xs">
+                      <% if c.status < 33 %>
+                        <div class="progress-bar progress-bar-danger" style="width: <%= c.status %>%"></div>
+                      <% elsif c.status < 66 %>
+                        <div class="progress-bar progress-bar-warning" style="width: <%= c.status %>%"></div>
+                      <% else %>
+                        <div class="progress-bar progress-bar-success" style="width: <%= c.status %>%"></div>
+                      <% end %>
+                    </div>
+                  </td>
+                  <td>
+                    <% if c.status < 33 %>
+                      <span class="badge bg-red"><%= c.status %>%</span>
+                    <% elsif c.status < 66 %>
+                      <span class="badge bg-orange"><%= c.status %>%</span>
+                    <% else %>
+                      <span class="badge bg-green"><%= c.status %>%</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                          <button type="button" class="btn btn-default">Opções</button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                              <li><a href="#edit-hop-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Passo</a></li>
+                              <li><a href="<%= hop_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Passo <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Passo</a></li>
+                          </ul>
+                      </div>
+                  </td>
+                </tr>
 
-                    <div class="knob-label"><%= c.name %></div>
-                  </div>
+                <div id="terms-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">TERMO DE APROVAÇÃO E ANUÊNCIA</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p class="text-justify"><%= @current_user.client.name %>, com sede na Rua <%= @current_user.client.street %>, inscrita no CNPJ/MF sob o nº XXX, neste ato representada pelo Sr. <%= @ %>, portador da cédula de identidade nº XXX e inscrito no CPF/MF sob o nº XXX, declara a quem possa interessar e para os devidos fins de direito a ciência e anuência do desenvolvimento da etapa nº X do projeto, podendo a CONTRATADA dar continuidade às etapas subsequentes do projeto, nos estritos termos do Contrato de Prestação de Serviços nº XXX.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Aprovar</button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
                 <% end %>
-              </div>
+              </table> 
             </div>
           </div>
           <!-- /.box -->
+          <% end %>
         </div>
         
       </div>
@@ -180,63 +226,17 @@
 <script type="text/javascript">
   
   $(function(){
-    /* jQueryKnob */
 
-    $(".knob").knob({
-      /*change : function (value) {
-       //console.log("change : " + value);
-       },
-       release : function (value) {
-       console.log("release : " + value);
-       },
-       cancel : function () {
-       console.log("cancel : " + this.value);
-       },*/
-      draw: function () {
+    $('[name-id]').on('click', function(){
+      var id = $(this).attr('name-id');
+      $('[name-id]').removeClass('active');
+      $(this).addClass('active');
+      $('[content-id]').fadeOut(500);
+      setTimeout(function(){
+        $('[content-id="'+id+'"]').fadeIn(500);
+      }, 600);
+    })
 
-        // "tron" case
-        if (this.$.data('skin') == 'tron') {
-
-          var a = this.angle(this.cv)  // Angle
-              , sa = this.startAngle          // Previous start angle
-              , sat = this.startAngle         // Start angle
-              , ea                            // Previous end angle
-              , eat = sat + a                 // End angle
-              , r = true;
-
-          this.g.lineWidth = this.lineWidth;
-
-          this.o.cursor
-          && (sat = eat - 0.3)
-          && (eat = eat + 0.3);
-
-          if (this.o.displayPrevious) {
-            ea = this.startAngle + this.angle(this.value);
-            this.o.cursor
-            && (sa = ea - 0.3)
-            && (ea = ea + 0.3);
-            this.g.beginPath();
-            this.g.strokeStyle = this.previousColor;
-            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false);
-            this.g.stroke();
-          }
-
-          this.g.beginPath();
-          this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false);
-          this.g.stroke();
-
-          this.g.lineWidth = 2;
-          this.g.beginPath();
-          this.g.strokeStyle = this.o.fgColor;
-          this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false);
-          this.g.stroke();
-
-          return false;
-        }
-      }
-    });
-    /* END JQUERY KNOB */
   });
 
 </script>
