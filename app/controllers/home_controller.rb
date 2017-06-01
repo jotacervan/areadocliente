@@ -8,6 +8,40 @@ class HomeController < ApplicationController
     end
   end
 
+  def redirect_notification
+    notif = Notification.find(params[:id])
+    if notif.viewed == 1
+      redirect_to notif.link
+    else
+      notif.viewed = 1
+      notif.save
+      redirect_to notif.link
+    end
+  end
+
+  def approve
+    user_authenticate
+    @hop = Hop.find(params[:id])
+    
+    @hop.approved = true
+    @hop.approved_user = @current_user.id
+    if @hop.save
+      if @hop.recursive
+        stage = Stage.find(@hop.next_stage)
+        stage.hops.create(:name => @hop.name, :recursive => false)
+        redirect_to client_projects_path(@hop.stage.core.id)
+        User.where(:user_type => 'superUser').each do |u|
+          u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/stages/'+@hop.stage.id)
+        end
+      else
+        redirect_to client_projects_path(@hop.stage.core.id)
+      end
+    else
+      redirect_to client_projects_path(@hop.stage.core.id), alert: 'Nao foi possivel aprovar!'
+    end
+    # redirect_to client_projects_path(@hop.stage.core.id)
+  end
+
   def client
     user_authenticate
     if !@current_user.nil? && @current_user.user_type != 'User'
@@ -21,6 +55,16 @@ class HomeController < ApplicationController
       redirect_to root_path
     end
     @project = Core.find(params[:id])
+  end
+
+  def new_comment
+    @comment = Comment.new(:comment => params[:comment][:comment], :has_image => params[:comment][:has_image], :picture => params[:comment][:picture], :hop_id => params[:comment][:hop_id], :user_id => params[:comment][:user_id])
+
+    if @comment.save
+      render json: {:message => 'Comentario postado com sucesso'}, :status => 200
+    else
+      render json: {:message => 'Erro ao postar comentario, tente novamente mais tarde'}, :status => 500
+    end
   end
 
   def login

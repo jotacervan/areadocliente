@@ -17,3 +17,9 @@
 .hidden-box{
 	display: none;
 }
+
+.comentario{
+	background:#ccc;
+	padding:15px;
+	margin-bottom:10px;
+}

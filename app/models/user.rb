@@ -21,6 +21,7 @@ class User
   belongs_to :client, optional: true
   has_many :backlogs, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :comments
   
   after_create :welcome_notification
 

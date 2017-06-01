@@ -116,10 +116,14 @@
                   </td>
                   <td>
                     <% if c.approved %> 
-                      <label class="label labe-success">Aprovado</label> 
+                      <label class="label label-success">Aprovado</label> 
                     <% else %>
                       <% if c.status == 100 %> 
-                        <button type="button" data-toggle="modal" data-target="#terms-<%= c.id %>" class="btn btn-success btn-sm">Aprovar</button>
+                        <% if @current_user.rg.blank? && @current_user.cpf.blank? %>
+                          <button type="button" onclick="alert('Complete seu cadastro para poder aprovar este Item')" class="btn btn-success btn-sm">Aprovar</button>
+                        <% else %>
+                          <button type="button" data-toggle="modal" data-target="#terms-<%= c.id %>" class="btn btn-success btn-sm">Aprovar</button>
+                        <% end %>
                       <% else %>
                         <label class="label label-warning">Bloqueado</label> 
                       <% end %>
@@ -152,12 +156,72 @@
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
-                              <li><a href="#edit-hop-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Passo</a></li>
-                              <li><a href="<%= hop_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Passo <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Passo</a></li>
+                              <li><a href="#new-comment-<%= c.id %>" data-toggle="modal"><i class="fa fa-commenting-o"></i> Comentar</a></li>
+                              <li><a href="#comments-<%= c.id %>" data-toggle="modal" ><i class="fa fa-comments-o"></i> Ver Comentários</a></li>
                           </ul>
                       </div>
                   </td>
                 </tr>
+
+                <div id="comments-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Comentários</h4>
+                      </div>
+                        <div class="modal-body">
+                          <% c.comments.order(created_at: :desc).each do |comment| %>
+                            <div class="comentario">
+                              <small>Comentario de <%= comment.user.name %> <span class="pull-right"><%= comment.created_at.strftime('%d/%m/%y as %H:%I') %></span> </small><br>
+                              <br>
+                                <%= comment.comment %>
+                                <br><br>
+                                <% if comment.has_image %>
+                                  <div class="text-center">
+                                    <img src="<%= comment.picture %>" style="max-width:100%" alt="Imagem" title="Imagem">
+                                  </div>
+                                <% end %>
+                            </div>
+                          <% end %>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <div id="new-comment-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Novo Comentário</h4>
+                      </div>
+                      <%= form_for :comment, url: new_comment_path do |f| %>
+                        <div class="modal-body">
+                          <%= f.label :comentário %>
+                          <%= f.text_area :comment, :class => 'form-control', :placeholder => 'Comentário' %>
+                          <%= f.hidden_field :has_image,  :value => 0 %><br>
+                          <%= f.hidden_field :hop_id, :value => c.id %>
+                          <%= f.hidden_field :user_id, :value => @current_user.id %>
+                          <button type="button" class="btn btn-default new-image"><i class="fa fa-paperclip"></i> Inserir imagem de anexo</button>
+                          <br>
+                          <div class="image hidden">
+                            <br>
+                            <%= f.file_field :picture %>
+                          </div>
+                          <br>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                          <button type="submit" class="btn btn-primary">Comentar</button>
+                        </div>
+                      <% end %>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
                 <div id="terms-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
                   <div class="modal-dialog" role="document">
@@ -167,11 +231,11 @@
                         <h4 class="modal-title">TERMO DE APROVAÇÃO E ANUÊNCIA</h4>
                       </div>
                       <div class="modal-body">
-                        <p class="text-justify"><%= @current_user.client.name %>, com sede na Rua <%= @current_user.client.street %>, inscrita no CNPJ/MF sob o nº XXX, neste ato representada pelo Sr. <%= @ %>, portador da cédula de identidade nº XXX e inscrito no CPF/MF sob o nº XXX, declara a quem possa interessar e para os devidos fins de direito a ciência e anuência do desenvolvimento da etapa nº X do projeto, podendo a CONTRATADA dar continuidade às etapas subsequentes do projeto, nos estritos termos do Contrato de Prestação de Serviços nº XXX.</p>
+                        <p class="text-justify"><%= @current_user.client.name %>, com sede na Rua <%= @current_user.client.street %>, inscrita no CNPJ/MF sob o nº XXX, neste ato representada pelo Sr. <%= @current_user.name %>, portador da cédula de identidade nº <%= @current_user.rg %> e inscrito no CPF/MF sob o nº <%= @current_user.cpf %>, declara a quem possa interessar e para os devidos fins de direito a ciência e anuência do desenvolvimento da etapa "<%= c.name %>" correspondente ao estágio "<%= c.stage.name %>" do projeto, podendo a CONTRATADA dar continuidade às etapas subsequentes do projeto, nos estritos termos do Contrato de Prestação de Serviços nº <%= @current_user.client.contract %>.</p>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Aprovar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" onclick="javascript: location.href='<%= approve_path(c.id) %>'" class="btn btn-primary">Aprovar</button>
                       </div>
                     </div><!-- /.modal-content -->
                   </div><!-- /.modal-dialog -->
@@ -227,6 +291,11 @@
   
   $(function(){
 
+    $('.new-image').on('click', function(){
+      $(this).parent().children('div').removeClass('hidden');
+      $(this).parent().children('#comment_has_image').val(1);
+    });
+
     $('[name-id]').on('click', function(){
       var id = $(this).attr('name-id');
       $('[name-id]').removeClass('active');
@@ -235,7 +304,29 @@
       setTimeout(function(){
         $('[content-id="'+id+'"]').fadeIn(500);
       }, 600);
-    })
+    });
+
+    $('[action="/new_comment_path"]').on('submit', function(e){
+      $('body').prepend('<div id="overlay" style="position:fixed; z-index:999999; display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:rgba(0,0,0,0.5); color:#fff;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+      $.ajax({
+        method: 'POST',
+        url: '/new_comment_path',
+        data: new FormData(this),
+        dataType: 'JSON',
+        processData: false,
+        contentType: false,
+      }).done(function(data){
+        alert(data.message);
+        console.log(data);
+        location.reload();
+      }).fail(function(data){
+        $('#overlay').remove();
+        alert('Erro, tente novamente mais tarde');
+        console.log(data);
+      });
+      e.preventDefault();
+    });
+
 
   });
 

@@ -8,12 +8,14 @@ class Hop
   field :recursive, type: Mongoid::Boolean
   field :next_stage, type: String
   field :approved, type: Mongoid::Boolean, default: false
+  field :approved_user, type: String
   field :has_image, type: Mongoid::Boolean, default: false
   field :picture_file_name, type: String
   field :picture_file_size, type: Integer
   field :picture_content_type, type: String
   
   belongs_to :stage
+  has_many :comments
 
   has_mongoid_attached_file :picture, :styles => { :medium => "320x320>", :thumb => "160x160#" },
                       :path => ':rails_root/public/images/:id-:basename-:style.:extension',
@@ -24,7 +26,7 @@ class Hop
   after_update :update_stage_status
 
   def update_stage_status
-
+    
     if self.stage.hops.count > 0
       total = 0
       self.stage.hops.each do |h|
@@ -37,15 +39,15 @@ class Hop
 
     self.stage.update(:status => percentil)
 
-    if self.status == 100
+    if self.status == 100 && self.approved == false
       self.send_approve_notification
     end
-
+    
   end
 
   def send_approve_notification
     self.stage.core.client.users.each do |u|
-      u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/profile')
+      u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/client_projects/'+self.stage.core.id)
     end
   end
 

@@ -54,9 +54,7 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-6">
-          <div class="row">
-            <div class="col-lg-6 col-xs-6">
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
@@ -70,7 +68,7 @@
               </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-6 col-xs-6">
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
@@ -83,10 +81,34 @@
                 </div>
               </div>
             </div>
-            <!-- ./col -->
-          </div>
-          <!-- ./row -->
+            
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Visão Geral</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="row">
+                <% @current_user.client.cores.each_with_index do |c,index| %>
+                  <div class="col-md-4 text-center">
 
+                    <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
+
+                    <div class="knob-label"><%= c.name %></div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <!-- /.box -->
+
+        </div>
+        <!-- ./ col -->
+
+        <div class="col-md-6">
 
           <!-- USERS LIST -->
               <div class="box box-danger">
@@ -115,40 +137,9 @@
                 </div>
               </div>
               <!--/.box -->
-
+              
         </div>
-        <div class="col-md-6">
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Visão Geral</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="row">
-                <% @current_user.client.cores.each_with_index do |c,index| %>
-                  <div class="col-md-4 text-center">
-
-                    <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
-
-                    <div class="knob-label"><%= c.name %></div>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <!-- /.box -->
-
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Atualizações</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <p>Teste</p>
-            </div>
-          </div>
-          <!-- /.box -->
-        </div>
+        <!-- ./col -->
         
       </div>
       <!-- /.row -->
