@@ -23,7 +23,7 @@ class CoresController < ApplicationController
 
   def create
     @core = Core.new(cores_params)
-
+    
     if @core.save
       @current_user = User.find(session[:user_id])
       @current_user.backlogs.create(:description => 'Criação do projeto ' + @core.name)

@@ -3,7 +3,7 @@ class HopsController < ApplicationController
   end
 
   def create
-
+    user_authenticate
     if params[:hop][:recursive] == '1'
       if params[:hop][:next_stage] == 'não'
         redirect_to stage_path(params[:hop][:stage_id]), notice: 'Para ser recursivo você precisa escolhar o próximo estágio'
@@ -11,6 +11,7 @@ class HopsController < ApplicationController
         @hop = Hop.new(hop_params)
 
         if @hop.save
+          @current_user.backlogs.create(:description => 'Criação do item ' + @hop.name)
           redirect_to stage_path(params[:hop][:stage_id]), notice: 'Passo Cadastrado com Sucesso'
         else
           redirect_to stage_path(params[:hop][:stage_id]), notice: 'Erro ao Cadastrar Passo'
@@ -21,6 +22,7 @@ class HopsController < ApplicationController
       @hop = Hop.new(hop_params)
 
       if @hop.save
+        @current_user.backlogs.create(:description => 'Criação do item ' + @hop.name)
         redirect_to stage_path(params[:hop][:stage_id]), notice: 'Passo Cadastrado com Sucesso'
       else
         redirect_to stage_path(params[:hop][:stage_id]), notice: 'Erro ao Cadastrar Passo'
@@ -45,6 +47,7 @@ class HopsController < ApplicationController
   def destroy
     hop = Hop.find(params[:id])
     stage = hop.stage.id
+    @current_user.backlogs.create(:description => 'Deletou o item ' + hop.name)
     hop.destroy()
     redirect_to stage_path(stage)
   end

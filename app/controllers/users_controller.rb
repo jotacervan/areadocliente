@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 		  	@users = User.all
 	  	end
 	end
-
+	
 	def new
 		if session[:user_id].nil?
   			redirect_to login_path, alert: 'Faça o login para continuar'
@@ -55,7 +55,6 @@ class UsersController < ApplicationController
 	  end
 	  
 	def create
-		
 		@user = User.new(user_params)
 
 		if @user.save
@@ -70,8 +69,7 @@ class UsersController < ApplicationController
 			@clients = Client.all
 			render 'new'
 		end
-		
-		
+
 	end
 
 	def destroy

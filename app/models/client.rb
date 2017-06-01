@@ -5,6 +5,7 @@ class Client
   field :name, type: String
   field :phone, type: String
   field :contract, type: String
+  field :cnpj, type: String
   field :zip, type: String
   field :street, type: String
   field :number, type: String

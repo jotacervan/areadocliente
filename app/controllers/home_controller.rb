@@ -33,6 +33,7 @@ class HomeController < ApplicationController
         User.where(:user_type => 'superUser').each do |u|
           u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/stages/'+@hop.stage.id)
         end
+        @current_user.backlogs.create(:description => 'Aprovou o item '+@hop.name)
       else
         redirect_to client_projects_path(@hop.stage.core.id)
       end

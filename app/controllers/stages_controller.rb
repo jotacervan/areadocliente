@@ -4,9 +4,11 @@ class StagesController < ApplicationController
   end
 
   def create
+    uer_a
     @stage = Stage.new(stage_params)
 
     if @stage.save
+      @current_user.backlogs.create(:description => 'Criação do estágio ' + @stage.name)
       redirect_to core_path(params[:stage][:core_id]), notice: 'Estágio criado com sucesso!'
     else
       redirect_to core_path(params[:stage][:core_id]), alert: 'Erro ao criar estágio!'
@@ -41,3 +43,4 @@ class StagesController < ApplicationController
       params.require(:stage).permit(:name, :core_id)
     end
 end
+# Comentarios habilitar dentro do cliente

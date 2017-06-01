@@ -19,10 +19,21 @@
       <%= f.label :nome %><br>
       <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
     </p>
-    <p>
-      <%= f.label :CEP %><br>
-      <%= f.text_field :zip, :class => 'form-control', :placeholder => 'CEP' %>
-    </p>
+    <div class="row">
+      <div class="col-md-6">
+            <p>
+              <%= f.label :CNPJ %><br>
+              <%= f.text_field :cnpj, :class => 'form-control', :placeholder => 'CNPJ' %>
+            </p>
+      </div>
+      <div class="col-md-6">
+          <p>
+            <%= f.label :CEP %><br>
+            <%= f.text_field :zip, :class => 'form-control', :placeholder => 'CEP' %>
+          </p>
+      </div>
+    </div>
+    
     <p>
       <%= f.label :bairro %><br>
       <%= f.text_field :neighborhood, :class => 'form-control', :placeholder => 'Bairro' %>
@@ -94,6 +105,7 @@
 
     $('#client_zip').mask('99999-999');
     $('#client_phone').mask('(99) 9999-9999?9');
+    $('#client_cnpj').mask('99.999.999/9999-99');
 
     $('#client_zip').on('focusout', function(){
       var cep = $(this).val().replace('-','');
