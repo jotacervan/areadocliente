@@ -219,7 +219,7 @@
       var total = parseInt($('.manutencao').attr('data-total'));
       var used = parseInt($('.manutencao').attr('data-used'));
 
-      percentil = (used/total) * 100;
+      percentil = parseInt((used/total) * 100);
 
       console.log(total);
       console.log(used);
