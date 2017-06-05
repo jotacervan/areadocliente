@@ -235,40 +235,24 @@
         ]);
 
         var options = {
+          animation: { duration: 2000, easing: 'inAndOut' },
           width: 200, height: 120,
-          redFrom: 90, redTo: 100,
-          yellowFrom:75, yellowTo: 90,
-          minorTicks: 5
+          redFrom: total-10, redTo: total,
+          yellowFrom:total-20, yellowTo: total-10,
+          minorTicks: 5, max: total
         };
 
         var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
 
         chart.draw(data, options);
-
-
-        function loadValue(i){
+        
+        setTimeout(function() {
           var data = google.visualization.arrayToDataTable([
             ['Label', 'Value'],
-            ['Manutenção', i],
+            ['Manutenção', used],
           ]);
           chart.draw(data, options);
-
-          if(i != percentil){
-            setTimeout(function(){
-              loadValue(i + 1);
-            }, 50);
-            
-          }
-        }
-
-        setTimeout(function(){
-          loadValue(0);
         }, 1000);
-        
-        // setInterval(function() {
-        //   data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
-        //   chart.draw(data, options);
-        // }, 13000);
         // setInterval(function() {
         //   data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
         //   chart.draw(data, options);
