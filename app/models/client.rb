@@ -14,7 +14,11 @@ class Client
   field :city, type: String
   field :state, type: String
   field :country, type: String
+  field :has_maintenance, type: Integer, default: 0
+  field :total_maintenance, type: Integer, default: 0
+  field :used_maintenance, type: Integer, default: 0
   
+
   has_many :users, dependent: :destroy
   has_many :cores, dependent: :destroy
 end

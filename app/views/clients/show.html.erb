@@ -91,6 +91,13 @@
 
               <strong><i class="fa fa-users margin-r-5"></i> Qtd de Usuários</strong>
               <p class="text-muted"><%= pluralize(@client.users.length, 'Usuário', 'Usuários') %></p>          
+              <hr>
+
+              <% if @client.has_maintenance == 1 %>
+              <strong><i class="fa fa-clock-o"></i> Manutençao</strong>
+              <p class="text-muted">Horas Totais: <%= @client.total_maintenance %>h</p>
+              <p class="text-muted">Horas Utilizadas: <%= @client.used_maintenance %>h</p>
+              <% end %>
 
             </div>
             <!-- /.box-body -->

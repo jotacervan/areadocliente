@@ -147,6 +147,15 @@
       "info": true,
       "autoWidth": false
     });
+
+    $('#client_has_maintenance').on('click', function(){
+      if($(this).is(':checked')){
+        $('.maintenance').removeClass('hidden').hide().slideDown();
+      }else{
+        $('.maintenance').slideUp();
+      }
+    });
+
   });
 </script>
 </body>

@@ -92,18 +92,50 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div class="row">
-                <% @current_user.client.cores.each_with_index do |c,index| %>
-                  <div class="col-md-4 text-center">
+                <% if @current_user.client.cores.count > 0 %>
+                    <% @current_user.client.cores.each_with_index do |c,index| %>
+                      <div class="col-md-4 text-center">
 
-                    <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
+                        <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
 
-                    <div class="knob-label"><%= c.name %></div>
+                        <div class="knob-label"><%= c.name %></div>
+                      </div>
+                    <% end %>
+                <% else %>
+                  <div class="col-md-12">
+                    <div class="alert alert-default">Você ainda não possui dados para acompanhamento, em breve as informações estarão disponíveis.</div>
                   </div>
+                    
                 <% end %>
               </div>
             </div>
           </div>
           <!-- /.box -->
+
+          <% if @current_user.client.has_maintenance > 0 %>
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Manutenção</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                      <p class="manutencao" data-total="<%= @current_user.client.total_maintenance %>" data-used="<%= @current_user.client.used_maintenance %>"><strong>Percentil</strong></p>
+                      <div id="chart_div" style="max-width: 200px; height: 120px;"></div>
+                    </div>
+                    <div class="col-md-8">
+                      <p><strong>Descrição</strong></p>
+                      <br>
+                      <p><strong>Total de Horas: </strong> <%= @current_user.client.total_maintenance %>h</p>
+                      <p><strong>Horas Restantes: </strong> <%= @current_user.client.total_maintenance - @current_user.client.used_maintenance %>h</p>
+                      <p class="percentil"><strong>Percentual utilizado: </strong></p>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box -->
+          <% end %>
 
         </div>
         <!-- ./ col -->
@@ -164,7 +196,7 @@
 
 
 <!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -174,11 +206,79 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
 <!-- jQuery Knob -->
-<script src="../../plugins/knob/jquery.knob.js"></script>
+<script src="/plugins/knob/jquery.knob.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      var total = parseInt($('.manutencao').attr('data-total'));
+      var used = parseInt($('.manutencao').attr('data-used'));
+
+      percentil = (used/total) * 100;
+
+      console.log(total);
+      console.log(used);
+      console.log(percentil);
+
+      $('.percentil').append(percentil+'%');
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Manutenção', 0],
+        ]);
+
+        var options = {
+          width: 200, height: 120,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+
+        function loadValue(i){
+          var data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Manutenção', i],
+          ]);
+          chart.draw(data, options);
+
+          if(i != percentil){
+            setTimeout(function(){
+              loadValue(i + 1);
+            }, 50);
+            
+          }
+        }
+
+        setTimeout(function(){
+          loadValue(0);
+        }, 1000);
+        
+        // setInterval(function() {
+        //   data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+        //   chart.draw(data, options);
+        // }, 13000);
+        // setInterval(function() {
+        //   data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+        //   chart.draw(data, options);
+        // }, 5000);
+        // setInterval(function() {
+        //   data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
+        //   chart.draw(data, options);
+        // }, 26000);
+      }
+    </script>
 <script type="text/javascript">
   
   $(function(){

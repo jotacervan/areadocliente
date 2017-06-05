@@ -34,10 +34,21 @@
       </div>
     </div>
     
-    <p>
-      <%= f.label :bairro %><br>
-      <%= f.text_field :neighborhood, :class => 'form-control', :placeholder => 'Bairro' %>
-    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <p>
+          <%= f.label :bairro %><br>
+          <%= f.text_field :neighborhood, :class => 'form-control', :placeholder => 'Bairro' %>
+        </p>    
+      </div>      
+      <div class="col-md-6">
+        <p>
+          <%= f.label :cidade %><br>
+          <%= f.text_field :city, :class => 'form-control', :placeholder => 'Cidade' %>
+        </p>
+      </div>
+    </div>
+    
      <div class="row">
       <div class="col-md-6">
         <p>
@@ -46,9 +57,24 @@
         </p>    
       </div>
       <div class="col-md-6">
+        <p style="padding-top:20px">
+          <%= f.check_box :has_maintenance %> &nbsp; 
+          <%= f.label :possui_manutenção %><br>
+        </p>
+      </div>
+    </div>
+
+    <div class="row maintenance hidden">
+      <div class="col-md-6">
         <p>
-          <%= f.label :cidade %><br>
-          <%= f.text_field :city, :class => 'form-control', :placeholder => 'Cidade' %>
+          <%= f.label :horas_totais_de_manutenção %><br>
+          <%= f.number_field :total_maintenance, :class => 'form-control', :placeholder => 'Horas totais de manutenção' %>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p>
+          <%= f.label :horas_de_manutenção_utilizadas %><br>
+          <%= f.number_field :used_maintenance, :class => 'form-control', :placeholder => 'Horas usadas de manutenção' %>
         </p>
       </div>
     </div>
