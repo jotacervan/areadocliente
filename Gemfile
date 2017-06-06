@@ -36,6 +36,7 @@ gem 'paperclip'
 gem 'bcrypt'
 gem 'bson_ext'
 gem 'devise'
+gem 'aws-sdk', '~> 2.3'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
