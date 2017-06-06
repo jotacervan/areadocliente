@@ -30,7 +30,7 @@ class CoresController < ApplicationController
 
       redirect_to @core
     else
-      redirect_to clients_path(params[:core][:client_id]), alert: 'Não foi possível criar projeto'
+      redirect_to customers_path(params[:core][:customer_id]), alert: 'Não foi possível criar projeto'
     end
   end
 
@@ -44,11 +44,11 @@ class CoresController < ApplicationController
   
     @core.destroy
 
-    redirect_to clients_path
+    redirect_to customers_path
   end
 
   private
     def cores_params
-      params.require(:core).permit(:name,:description,:client_id)
+      params.require(:core).permit(:name,:description,:customer_id)
     end
 end

@@ -46,7 +46,7 @@ class Hop
   end
 
   def send_approve_notification
-    self.stage.core.client.users.each do |u|
+    self.stage.core.customer.users.each do |u|
       u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/client_projects/'+self.stage.core.id)
     end
   end

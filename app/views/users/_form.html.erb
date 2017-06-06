@@ -61,8 +61,8 @@
     </p>
     <p>
       <%= f.label :cliente %><br>
-      <%= f.select(:client_id, {}, {}, {:class => 'form-control'}) do %>
-        <% @clients.each do |c| %>
+      <%= f.select(:customer_id, {}, {}, {:class => 'form-control'}) do %>
+        <% @customers.each do |c| %>
           <%= content_tag(:option, c.name, value: c.id) %>
         <% end %>
       <% end %>

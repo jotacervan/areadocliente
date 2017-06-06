@@ -1,12 +1,12 @@
-<%= form_for @client do |f| %>
+<%= form_for @customer do |f| %>
  
-  <% if @client.errors.any? %>
+  <% if @customer.errors.any? %>
     <div id="alert alert-danger text-center">
       <h4>
-        <%= pluralize(@client.errors.count, "error") %> Impediram esse usuário de ser criado
+        <%= pluralize(@customer.errors.count, "error") %> Impediram esse usuário de ser criado
       </h4>
       <ul>
-        <% @client.errors.full_messages.each do |msg| %>
+        <% @customer.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
@@ -129,22 +129,22 @@
 <script type="text/javascript">
   $(function(){
 
-    $('#client_zip').mask('99999-999');
-    $('#client_phone').mask('(99) 9999-9999?9');
-    $('#client_cnpj').mask('99.999.999/9999-99');
+    $('#customer_zip').mask('99999-999');
+    $('#customer_phone').mask('(99) 9999-9999?9');
+    $('#customer_cnpj').mask('99.999.999/9999-99');
 
-    $('#client_zip').on('focusout', function(){
+    $('#customer_zip').on('focusout', function(){
       var cep = $(this).val().replace('-','');
       $.ajax({
         url: 'https://viacep.com.br/ws/'+cep+'/json/',
         dataType: 'JSON'
       }).done(function(data){
         console.log('Sucesso');
-        $('#client_neighborhood').val(data.bairro).click();
-        $('#client_street').val(data.logradouro).click();
-        $('#client_state').val(data.uf).click();
-        $('#client_city').val(data.localidade).click();
-        $('#client_country').val('Brasil').click();
+        $('#customer_neighborhood').val(data.bairro).click();
+        $('#customer_street').val(data.logradouro).click();
+        $('#customer_state').val(data.uf).click();
+        $('#customer_city').val(data.localidade).click();
+        $('#customer_country').val('Brasil').click();
         console.log(data);
       }).fail(function(data){
         console.log('Fail');

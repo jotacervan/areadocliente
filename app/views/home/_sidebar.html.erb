@@ -21,7 +21,7 @@
           </a>
         </li>
         <% if @current_user.user_type != 'User' %>
-        <li <% if request.fullpath == '/clients' || request.fullpath == '/clients/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
+        <li <% if request.fullpath == '/customers' || request.fullpath == '/customers/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Clientes</span>
@@ -30,8 +30,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li <% if request.fullpath == '/clients/new' %> class="active" <% end %> ><a href="<%= new_client_path %>"><i class="fa fa-user-plus"></i> Novo Cliente</a></li>
-            <li <% if request.fullpath == '/clients' %> class="active" <% end %> ><a href="<%= clients_path %>"><i class="fa fa-user"></i> Ver Clientes</a></li>
+            <li <% if request.fullpath == '/customers/new' %> class="active" <% end %> ><a href="<%= new_customer_path %>"><i class="fa fa-user-plus"></i> Novo Cliente</a></li>
+            <li <% if request.fullpath == '/customers' %> class="active" <% end %> ><a href="<%= customers_path %>"><i class="fa fa-user"></i> Ver Clientes</a></li>
           </ul>
         </li>
         <li <% if request.fullpath == '/users' || request.fullpath == '/users/new' %> class="active treeview" <% else %> class="treeview" <% end %> >
@@ -63,7 +63,7 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <% @current_user.client.cores.each do |c| %>
+              <% @current_user.customer.cores.each do |c| %>
                 <li <% if request.fullpath == '/client_projects/'+c.id %> class="active" <% end %> ><a href="<%= client_projects_path(c.id) %>"><i class="fa fa-user-plus"></i> <%= c.name %></a></li>
               <% end %>
               

@@ -58,14 +58,14 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3><%= Client.all.length %></h3>
+              <h3><%= Customer.all.length %></h3>
 
               <p>Clientes</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="<%= clients_path %>" class="small-box-footer">Mais info <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<%= customers_path %>" class="small-box-footer">Mais info <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -139,7 +139,7 @@
                   <td><%= u.name %></td>
                   <td><%= u.stage.name %></td>
                   <td><%= u.stage.core.name %></td>
-                  <td><%= u.stage.core.client.name %></td>
+                  <td><%= u.stage.core.customer.name %></td>
                   <td>
                     <div class="progress progress-xs">
                       <% if u.status < 33 %>

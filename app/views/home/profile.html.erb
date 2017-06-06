@@ -68,10 +68,10 @@
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>Empresa</b> 
-                  <% if @current_user.client.nil? %>
+                  <% if @current_user.customer.nil? %>
                     <span class="pull-right">Administrador</span>
                   <% else %>
-                    <span class="pull-right"><%= @current_user.client.name %></span>
+                    <span class="pull-right"><%= @current_user.customer.name %></span>
                   <% end %>
                 </li>
               </ul>

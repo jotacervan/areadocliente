@@ -58,7 +58,7 @@
         
       </h1>
       <ol class="breadcrumb">
-        <li><a href="<%= clients_path %>" ><i class="fa fa-dashboard"></i> Clientes</a></li>
+        <li><a href="<%= customers_path %>" ><i class="fa fa-dashboard"></i> Clientes</a></li>
         <li class="active">Detalhes do Cliente</li>
       </ol>
     </section>
@@ -72,31 +72,31 @@
 
           <div class="box box-info">
             <div class="box-header">
-              <h3 class="box-title"><%= @client.name %></h3>
-              <a href="<%= edit_client_path(@client.id) %>" class="btn btn-info btn-sm pull-right"><i class="fa fa-pencil"></i> Editar</a>
+              <h3 class="box-title"><%= @customer.name %></h3>
+              <a href="<%= edit_customer_path(@customer.id) %>" class="btn btn-info btn-sm pull-right"><i class="fa fa-pencil"></i> Editar</a>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <strong><i class="fa fa-phone margin-r-5"></i> Telefone</strong>
-              <p class="text-muted"><%= @client.phone %></p>
+              <p class="text-muted"><%= @customer.phone %></p>
               <hr>
 
               <strong><i class="fa fa-file-text margin-r-5"></i> Proposta</strong>
-              <p class="text-muted"><%= @client.contract %></p>
+              <p class="text-muted"><%= @customer.contract %></p>
               <hr>
 
               <strong><i class="fa fa-globe margin-r-5"></i> Endereço</strong>
-              <p class="text-muted"><%= @client.street %> <%= @client.number %> comp. <%= @client.complement %>, <%= @client.neighborhood %>, <%= @client.city %> - <%= @client.state %></p>
+              <p class="text-muted"><%= @customer.street %> <%= @customer.number %> comp. <%= @customer.complement %>, <%= @customer.neighborhood %>, <%= @customer.city %> - <%= @customer.state %></p>
               <hr>
 
               <strong><i class="fa fa-users margin-r-5"></i> Qtd de Usuários</strong>
-              <p class="text-muted"><%= pluralize(@client.users.length, 'Usuário', 'Usuários') %></p>          
+              <p class="text-muted"><%= pluralize(@customer.users.length, 'Usuário', 'Usuários') %></p>          
               <hr>
 
-              <% if @client.has_maintenance == 1 %>
+              <% if @customer.has_maintenance == 1 %>
               <strong><i class="fa fa-clock-o"></i> Manutençao</strong>
-              <p class="text-muted">Horas Totais: <%= @client.total_maintenance %>h</p>
-              <p class="text-muted">Horas Utilizadas: <%= @client.used_maintenance %>h</p>
+              <p class="text-muted">Horas Totais: <%= @customer.total_maintenance %>h</p>
+              <p class="text-muted">Horas Utilizadas: <%= @customer.used_maintenance %>h</p>
               <% end %>
 
             </div>
@@ -116,7 +116,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Novo Usuário para <%= @client.name %></h4>
+                      <h4 class="modal-title">Novo Usuário para <%= @customer.name %></h4>
                     </div>
                     <div class="modal-body">
                       <%= form_for @user do |f| %>
@@ -161,11 +161,11 @@
                             <%= f.password_field :password_confirmation, :class => 'form-control', :placeholder => 'Confirmação de Senha' %>
                           </p>
 
-                            <%= f.hidden_field :redirect, :value => 'clients' %>
+                            <%= f.hidden_field :redirect, :value => 'customers' %>
 
                             <%= f.hidden_field :user_type, :value => 'User' %>
                           
-                            <%= f.hidden_field :client_id, :value => @client.id %>
+                            <%= f.hidden_field :customer_id, :value => @customer.id %>
                           
                         </div>
                        </div>
@@ -185,7 +185,7 @@
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <ul class="users-list clearfix">
-              <% usuarios = @client.users.order(created_at: :desc) %>
+              <% usuarios = @customer.users.order(created_at: :desc) %>
                 <% usuarios.take(8).each do |u| %>
                   <li>
                   <img src="<%= u.picture.url(:thumb) %>" style="width:128px; height:128px" alt="User Image">
@@ -214,7 +214,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Novo Projeto para <%= @client.name %></h4>
+                      <h4 class="modal-title">Novo Projeto para <%= @customer.name %></h4>
                     </div>
                     <div class="modal-body">
                       <%= form_for @core do |f| %>
@@ -235,7 +235,7 @@
                         </div>
                        </div>
                           
-                        <%= f.hidden_field :client_id, :value => @client.id %>
+                        <%= f.hidden_field :customer_id, :value => @customer.id %>
                         
                         <p>
                           <%= f.submit( {:class => 'btn btn-primary'}) %>
@@ -262,7 +262,7 @@
                   <th style="width:115px"></th>
                   
                 </tr>
-                <% @client.cores.order(created_at: :asc).each_with_index do |c,key| %>
+                <% @customer.cores.order(created_at: :asc).each_with_index do |c,key| %>
                 <tr>
                   <td><%= key %>.</td>
                   <td><%= c.name %></td>

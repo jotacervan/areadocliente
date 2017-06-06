@@ -58,7 +58,7 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3><%= @current_user.client.users.count %></h3>
+                  <h3><%= @current_user.customer.users.count %></h3>
 
                   <p>Usuários</p>
                 </div>
@@ -72,7 +72,7 @@
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3><%= @current_user.client.cores.count %></h3>
+                  <h3><%= @current_user.customer.cores.count %></h3>
 
                   <p>Projetos</p>
                 </div>
@@ -92,8 +92,8 @@
             <!-- /.box-header -->
             <div class="box-body">
               <div class="row">
-                <% if @current_user.client.cores.count > 0 %>
-                    <% @current_user.client.cores.each_with_index do |c,index| %>
+                <% if @current_user.customer.cores.count > 0 %>
+                    <% @current_user.customer.cores.each_with_index do |c,index| %>
                       <div class="col-md-4 text-center">
 
                         <input type="text" class="knob" readonly="true" value="<%= c.status %>" data-width="90" data-height="90" data-fgColor="<% if c.status < 33 %>#DD4B39<% elsif c.status < 66 %>#F39C12<% else %>#3C763D<% end %>">
@@ -112,7 +112,7 @@
           </div>
           <!-- /.box -->
 
-          <% if @current_user.client.has_maintenance > 0 %>
+          <% if @current_user.customer.has_maintenance > 0 %>
             <div class="box box-primary">
               <div class="box-header with-border">
                 <h3 class="box-title">Manutenção</h3>
@@ -121,14 +121,14 @@
               <div class="box-body">
                 <div class="row">
                     <div class="col-md-4">
-                      <p class="manutencao" data-total="<%= @current_user.client.total_maintenance %>" data-used="<%= @current_user.client.used_maintenance %>"><strong>Percentil</strong></p>
+                      <p class="manutencao" data-total="<%= @current_user.customer.total_maintenance %>" data-used="<%= @current_user.customer.used_maintenance %>"><strong>Percentil</strong></p>
                       <div id="chart_div" style="max-width: 200px; height: 120px;"></div>
                     </div>
                     <div class="col-md-8">
                       <p><strong>Descrição</strong></p>
                       <br>
-                      <p><strong>Total de Horas: </strong> <%= @current_user.client.total_maintenance %>h</p>
-                      <p><strong>Horas Restantes: </strong> <%= @current_user.client.total_maintenance - @current_user.client.used_maintenance %>h</p>
+                      <p><strong>Total de Horas: </strong> <%= @current_user.customer.total_maintenance %>h</p>
+                      <p><strong>Horas Restantes: </strong> <%= @current_user.customer.total_maintenance - @current_user.customer.used_maintenance %>h</p>
                       <p class="percentil"><strong>Percentual utilizado: </strong></p>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
                   <ul class="users-list clearfix">
-                    <% @current_user.client.users.each do |u| %>
+                    <% @current_user.customer.users.each do |u| %>
                       <li>
                       <img src="<%= u.picture.url(:thumb) %>" style="width:128px; height:128px" alt="User Image">
                       <a class="users-list-name" href="#"><%= u.name %></a>

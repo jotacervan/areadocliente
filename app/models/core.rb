@@ -6,6 +6,6 @@ class Core
   field :description, type: String
   field :status, type: Integer, default: 0
   
-  belongs_to :client
+  belongs_to :customer
   has_many :stages, dependent: :destroy
 end

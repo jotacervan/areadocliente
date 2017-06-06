@@ -4,41 +4,41 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Mobile2you | Clientes</title>
+  <title>Mobile2you | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/plugins/font-awesome-4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+  <link rel="stylesheet" href="/plugins/iCheck/flat/blue.css">
   <!-- Morris chart -->
-  <link rel="stylesheet" href="plugins/morris/morris.css">
+  <link rel="stylesheet" href="/plugins/morris/morris.css">
   <!-- jvectormap -->
-  <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <link rel="stylesheet" href="/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Date Picker -->
   <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+  <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  
+  <link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-<%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tag %>
 
 </head>
@@ -54,12 +54,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Clientes
+        Novo Cliente
         
       </h1>
       <ol class="breadcrumb">
-        <li><a href="<%= clients_path %>" ><i class="fa fa-dashboard"></i> Clientes</a></li>
-        <li class="active">Ver Clientes</li>
+        <li><a href="<%= customers_path %>" ><i class="fa fa-dashboard"></i> Clientes</a></li>
+        <li class="active">Novo Cliente</li>
       </ol>
     </section>
 
@@ -73,47 +73,11 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Clientes Cadastrados</h3>
+              <h3 class="box-title">Novo Cliente</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th style="width:10px">#</th>
-                  <th>Nome</th>
-                  <th>Cidade</th>
-                  <th>Estado</th>
-                  <th>Usuários</th>
-                  <th>Opções</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% @clients.each_with_index do |c,key| %>
-                  <tr>
-                    <td><%= key %></td>
-                    <td><%= c.name %></td>
-                    <td><%= c.city %></td>
-                    <td><%= c.state %></td>
-                    <td><%= c.users.length %></td>
-                    <td>
-                      <div class="btn-group">
-                          <button type="button" class="btn btn-default">Opções</button>
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                              <li><a href="<%= client_path(c.id) %>"><i class="fa fa-eye"></i> Visualizar</a></li>
-                              <li><a href="<%= edit_client_path(c.id) %>"><i class="fa fa-pencil"></i> Editar Cliente</a></li>
-                              <li><a href="<%= client_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o cliente <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Cliente</a></li>
-                          </ul>
-                      </div>
-                    </td>
-                  </tr>
-                <% end %>
-                </tbody>
-              </table>
+              <%= render 'form' %>
             </div>
             <!-- /.box-body -->
           </div>
@@ -134,6 +98,7 @@
     <strong>Copyright &copy; 2017 <a href="http://mobile2you.com.br">Mobile2You</a>.</strong> All rights
     reserved.
   </footer>
+
  
 </div>
 <!-- ./wrapper -->
@@ -148,14 +113,15 @@
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/bootstrap/js/bootstrap.min.js"></script>
+
 <!-- Bootstrap WYSIHTML5 -->
 <script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!-- Slimscroll -->
-<script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
 <!-- FastClick -->
 <script src="/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js"></script>
+<script src="/dist/js/mask.js"></script>
 
 <script src="/plugins/datatables/jquery.dataTables.js"></script>
 <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
@@ -163,6 +129,27 @@
 <script>
   $(function () {
     $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+    
+    if($('#customer_has_maintenance').is(':checked')){
+      $('.maintenance').removeClass('hidden').hide().slideDown();
+    }
+
+    $('#customer_has_maintenance').on('click', function(){
+      if($(this).is(':checked')){
+        $('.maintenance').removeClass('hidden').hide().slideDown();
+      }else{
+        $('.maintenance').slideUp();
+      }
+    });
+
   });
 </script>
 </body>

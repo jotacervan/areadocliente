@@ -18,7 +18,7 @@ class User
 
   has_secure_password
   
-  belongs_to :client, optional: true
+  belongs_to :customer, optional: true
   has_many :backlogs, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :comments

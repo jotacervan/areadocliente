@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 		  	@current_user = User.find(session[:user_id])
 		  	@user = User.new
 		  	@users = User.all
-		  	@clients = Client.all
+		  	@customers = Customer.all
 	  	end
 	end
 
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 		  	@user = User.find(params[:id])
 		  	@current_user = User.find(session[:user_id])
 		  	@users = User.all
-		  	@clients = Client.all
+		  	@customers = Customer.all
 	  	end
 	end
 
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 	      @current_user.backlogs.create(:description => 'Atualização do usuário ' + @user.name)
 	      redirect_to users_path
 	    else
-	      @clients = Client.all
+	      @customers = Customer.all
 	      render 'edit'
 	    end
 	  end
@@ -61,12 +61,12 @@ class UsersController < ApplicationController
 			@current_user = User.find(session[:user_id])
 			@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
 			if(params[:user][:redirect] == 'clients')
-				redirect_to client_path(@user.client)
+				redirect_to customer_path(@user.customer)
 			else
 				redirect_to @user	
 			end
 		else
-			@clients = Client.all
+			@customers = Customer.all
 			render 'new'
 		end
 
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
 
 	private
 		def user_params
-			params.require(:user).permit(:name,:email,:phone,:rg,:cpf,:password,:password_confirmation,:picture,:login,:user_type,:client_id)
+			params.require(:user).permit(:name,:email,:phone,:rg,:cpf,:password,:password_confirmation,:picture,:login,:user_type,:customer_id)
 		end
 
 end
