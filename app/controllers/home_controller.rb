@@ -52,10 +52,11 @@ class HomeController < ApplicationController
 
   def client_projects
     user_authenticate
-    if !@current_user.nil? && @current_user.user_type != 'User'
-      redirect_to root_path
+    @project = Core.find(params[:id]) rescue nil
+
+    if @project.nil?
+      redirect_to root_path, notice: 'Item não se encontra mais em nosso registro!'
     end
-    @project = Core.find(params[:id])
   end
 
   def new_comment
