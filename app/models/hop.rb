@@ -17,10 +17,14 @@ class Hop
   belongs_to :stage
   has_many :comments
 
-  has_mongoid_attached_file :picture, :styles => { :medium => "320x320>", :thumb => "160x160#" },
-                      :path => ':rails_root/public/images/:id-:basename-:style.:extension',
-                      :url => '/images/:id-:basename-:style.:extension'
-  validates_attachment_size :picture, :less_than => 10.megabytes
+  has_mongoid_attached_file :picture, 
+    :styles => { :medium => "320x320>", :thumb => "160x160#" },
+    :storage        => :s3,
+    :bucket_name    => 'PainelMobile',
+    :bucket    => 'PainelMobile',
+    :path           => ':attachment/:id/:style.:extension',
+    :s3_credentials => File.join(Rails.root, 'config', 's3.yml')
+  validates_attachment_size :picture, :less_than => 5.megabytes
   validates_attachment_content_type :picture, :content_type => ['image/jpeg', 'image/png', 'image/jpg']
 
   after_update :update_stage_status

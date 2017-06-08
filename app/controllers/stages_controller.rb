@@ -4,7 +4,7 @@ class StagesController < ApplicationController
   end
 
   def create
-    uer_a
+    user_authenticate
     @stage = Stage.new(stage_params)
 
     if @stage.save

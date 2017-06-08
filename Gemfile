@@ -32,11 +32,11 @@ gem "mongo_session_store-rails3"
 gem "paranoia", "~> 2.2"
 gem 'mongoid_paranoia'
 gem "mongoid-paperclip", :require => "mongoid_paperclip"
-gem 'paperclip'
+gem 'aws-sdk', '< 2.0'
+gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 gem 'bcrypt'
 gem 'bson_ext'
 gem 'devise'
-gem 'aws-sdk', '~> 2.3'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
