@@ -35,6 +35,13 @@ class CoresController < ApplicationController
   end
 
   def update
+    @core = Core.find(params[:id])
+    
+    if @core.update(cores_params)
+      redirect_to customers_path(params[:core][:customer_id]), notice: 'Projeto Editado com Sucesso'
+    else
+      redirect_to customers_path(params[:core][:customer_id]), alert: 'Não foi possível editar o projeto'
+    end
   end
 
   def destroy
