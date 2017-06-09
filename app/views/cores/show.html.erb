@@ -151,12 +151,46 @@
                           </button>
                           <ul class="dropdown-menu" role="menu">
                               <li><a href="<%= stage_path(c.id) %>"><i class="fa fa-eye"></i> Visualizar</a></li>
-                              <li><a href="#edit-stage-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Projeto</a></li>
-                              <li><a href="<%= core_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Estágio <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar projeto</a></li>
+                              <li><a href="#edit-stage-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Estágio</a></li>
+                              <li><a href="<%= stage_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Estágio <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Estágio</a></li>
                           </ul>
                       </div>
                   </td>
                 </tr>
+
+                <div id="edit-stage-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Editar Estágio <%= c.name %></h4>
+                      </div>
+                      <div class="modal-body">
+                        <%= form_for c do |f| %>
+                          
+                          <div class="row">
+                            <div class="col-md-12">
+                              <p>
+                                <%= f.label :nome %><br>
+                                <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
+                              </p>
+                            
+                            </div>
+                          </div>
+                            
+                          <%= f.hidden_field :core_id, :value => @core.id %>
+                          
+                          <p>
+                            <%= f.submit( {:class => 'btn btn-primary'}) %>
+                          </p>
+                          
+                        <% end %>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
                 <% end %>
               </table> 
             </div>

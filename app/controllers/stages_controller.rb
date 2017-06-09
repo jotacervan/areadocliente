@@ -33,9 +33,20 @@ class StagesController < ApplicationController
   end
 
   def update
+    @stage = Stage.find(params[:id])
+    
+    if @stage.update(stage_params)
+      redirect_to core_path(@stage.core.id), notice: 'Estágio Editado com Sucesso'
+    else
+      redirect_to core_path(@stage.core.id), alert: 'Não foi possível editar o estágio'
+    end
   end
 
   def destroy
+    @stage = Stage.find(params[:id])
+    @core = @stage.core.id
+    @stage.destroy()
+    redirect_to core_path(@core), notice: 'Stágio deletado com Sucesso'
   end
 
   private
