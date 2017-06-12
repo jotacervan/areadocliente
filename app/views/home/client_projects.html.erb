@@ -61,8 +61,9 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-3">
+        
           <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
+            <div class="col-md-3">
             <% if s.status < 33 
                 color = 'bg-red'
                elsif s.status < 66 
@@ -88,8 +89,9 @@
               <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
+            </div>
           <% end %>
-        </div>
+        
       </div>
       <div class="row">
         <div class="col-md-12">
