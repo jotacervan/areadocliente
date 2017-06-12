@@ -104,7 +104,8 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Passo</th>
-                  <th>Imagem</th>
+                  <th>Horas Estimadas</th>
+                  <th>Versão</th>
                   <th>Aprovação</th>
                   <th>Progresso</th>
                   <th style="width: 40px">Label</th>
@@ -128,11 +129,9 @@
                   </td>
                   <td><%= c.name %></td>
                   <td>
-                    <% if c.has_image %>
-                    <% else %>
-                    Não Possui
-                    <% end %>
+                    <%= c.estimated_time %>
                   </td>
+                  <td><%= c.versao %></td>
                   <td>
                     <% if c.approved %> 
                       <label class="label label-default">Aprovado</label> 

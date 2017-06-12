@@ -80,6 +80,6 @@ class HopsController < ApplicationController
 
   private
     def hop_params
-      params.require(:hop).permit(:name,:status,:recursive,:next_stage,:stage_id,:priority)
+      params.require(:hop).permit(:name,:status,:recursive,:next_stage,:stage_id,:priority,:estimated_time,:versao)
     end
 end

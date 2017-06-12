@@ -14,6 +14,8 @@ class Hop
   field :picture_file_size, type: Integer
   field :picture_content_type, type: String
   field :priority, type: Integer, default: 0
+  field :estimated_time, type: String
+  field :versao, type: String
   
   belongs_to :stage
   has_many :comments

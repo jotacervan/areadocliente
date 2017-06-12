@@ -88,6 +88,14 @@
                               <%= f.text_field :name, :class => 'form-control', :placeholder => 'Nome' %>
                             </p>
                             <p>
+                              <%= f.label :horas_estimadas %><br>
+                              <%= f.text_field :estimated_time, :class => 'form-control', :placeholder => 'Horas Estimadas' %>
+                            </p>
+                            <p>
+                              <%= f.label :versão %><br>
+                              <%= f.text_field :versao, :class => 'form-control', :placeholder => 'Versão' %>
+                            </p>
+                            <p>
                               <%= f.label :status_de_0_a_100 %>
                               <%= f.number_field :status, :class => 'form-control', :placeholder => 'Status' %>
                             </p>
@@ -266,6 +274,14 @@
                             <p>
                               <%= f.label :nome %><br>
                               <%= f.text_field :name, :class => 'form-control', :value => c.name %>
+                            </p>
+                            <p>
+                              <%= f.label :horas_estimadas %><br>
+                              <%= f.text_field :estimated_time, :class => 'form-control', :placeholder => 'Horas Estimadas' %>
+                            </p>
+                            <p>
+                              <%= f.label :versão %><br>
+                              <%= f.text_field :versao, :class => 'form-control', :placeholder => 'Versão' %>
                             </p>
                             <p>
                               <%= f.label :status_de_0_a_100 %>
