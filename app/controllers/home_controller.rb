@@ -29,11 +29,12 @@ class HomeController < ApplicationController
       if @hop.recursive
         stage = Stage.find(@hop.next_stage)
         stage.hops.create(:name => @hop.name, :recursive => false)
-        redirect_to client_projects_path(@hop.stage.core.id)
         User.where(:user_type => 'superUser').each do |u|
           u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/stages/'+@hop.stage.id)
         end
         @current_user.backlogs.create(:description => 'Aprovou o item '+@hop.name)
+        
+        redirect_to client_projects_path(@hop.stage.core.id)
       else
         redirect_to client_projects_path(@hop.stage.core.id)
       end

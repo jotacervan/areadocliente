@@ -45,6 +45,8 @@ class HopsController < ApplicationController
   end
 
   def destroy
+    user_authenticate
+    
     hop = Hop.find(params[:id])
     stage = hop.stage.id
     @current_user.backlogs.create(:description => 'Deletou o item ' + hop.name)
