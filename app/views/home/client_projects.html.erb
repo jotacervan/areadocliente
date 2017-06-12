@@ -20,6 +20,8 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="/plugins/iCheck/flat/blue.css">
   <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
   <link rel="stylesheet" href="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="/dist/css/css.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -97,7 +99,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table class="table table-bordered">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Passo</th>
@@ -107,7 +110,8 @@
                   <th style="width: 40px">Label</th>
                   <th style="width:115px"></th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <% s.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
                 <tr>
@@ -257,6 +261,7 @@
                 </div><!-- /.modal -->
 
                 <% end %>
+                </tbody>
               </table> 
             </div>
           </div>
@@ -301,7 +306,9 @@
 <!-- AdminLTE App -->
 <script src="/dist/js/app.min.js"></script>
 <!-- jQuery Knob -->
-<script src="../../plugins/knob/jquery.knob.js"></script>
+<script src="/plugins/knob/jquery.knob.js"></script>
+<script src="/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/plugins/datatables/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
   
   $(function(){
@@ -341,6 +348,8 @@
       });
       e.preventDefault();
     });
+
+    $("#example1").DataTable();
 
 
     $('[data-priority]').on('click', function(e){
