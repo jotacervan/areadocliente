@@ -28,12 +28,12 @@ class Hop
     :path           => ':attachment/:id/:style.:extension',
     :s3_credentials => File.join(Rails.root, 'config', 's3.yml')
   validates_attachment_size :picture, :less_than => 5.megabytes
-  validates_attachment_content_type :picture, :content_type => ['image/jpeg', 'image/png', 'image/jpg']
+  validates_attachment_content_type :picture, :content_type => ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']
 
   after_update :update_stage_status
 
   def update_stage_status
-    
+      
     if self.stage.hops.count > 0
       total = 0
       self.stage.hops.each do |h|

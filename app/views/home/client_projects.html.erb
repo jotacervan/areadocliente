@@ -82,16 +82,17 @@
                   <div class="progress-bar" style="width: <%= s.status %>%;"></div>
                 </div>
                     <span class="progress-description pull-right">
-                      Detalhes >
+                      Detalhes <i class="fa fa-angle-down"></i>
                   </span>
               </div>
               <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
           <% end %>
-           
         </div>
-        <div class="col-md-9">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
           <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
           <div class="box stage-content <% if key != 0 %> hidden-box <% end %>" content-id="<%= s.id %>" >
             <div class="box-header with-border">
