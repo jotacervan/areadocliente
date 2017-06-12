@@ -61,7 +61,7 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
             <% if s.status < 33 
                 color = 'bg-red'
@@ -91,7 +91,7 @@
           <% end %>
            
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
           <% @project.stages.order(created_at: :asc).each_with_index do |s,key| %>
           <div class="box stage-content <% if key != 0 %> hidden-box <% end %>" content-id="<%= s.id %>" >
             <div class="box-header with-border">
