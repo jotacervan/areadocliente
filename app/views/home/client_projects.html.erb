@@ -28,6 +28,11 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <style type="text/css">
+    .fa-flag{
+      cursor:pointer;
+    }
+  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -106,7 +111,17 @@
                 <% s.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
                 <tr>
-                  <td><%= key %>.</td>
+                  <td>
+                  <div class="dropdown">
+                    <% if c.priority == 0 %><i id="flag-<%= c.id %>" class="fa fa-flag text-gray" data-toggle="dropdown"></i><% elsif c.priority == 1 %><i id="flag-<%= c.id %>" class="fa fa-flag text-red" data-toggle="dropdown"></i><% elsif c.priority == 2 %><i id="flag-<%= c.id %>" class="fa fa-flag text-orange" data-toggle="dropdown"></i><% elsif c.priority == 3 %><i id="flag-<%= c.id %>" class="fa fa-flag text-blue" data-toggle="dropdown"></i><% end %>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#" data-priority="0" data-id="<%= c.id %>" ><i class="fa fa-flag text-gray"></i> Nenhum</a></li>
+                      <li><a href="#" data-priority="1" data-id="<%= c.id %>" ><i class="fa fa-flag text-red"></i> Alta</a></li>
+                      <li><a href="#" data-priority="2" data-id="<%= c.id %>" ><i class="fa fa-flag text-orange"></i> Média</a></li>
+                      <li><a href="#" data-priority="3" data-id="<%= c.id %>" ><i class="fa fa-flag text-blue"></i> Baixa</a></li>
+                    </ul>
+                  </div>
+                  </td>
                   <td><%= c.name %></td>
                   <td>
                     <% if c.has_image %>
@@ -327,6 +342,39 @@
       e.preventDefault();
     });
 
+
+    $('[data-priority]').on('click', function(e){
+      e.preventDefault();
+
+      var priority = $(this).attr('data-priority');
+      var id = $(this).attr('data-id');
+      var classe = $('#flag-'+id ).attr('class');
+      $('#flag-'+id ).attr('class','fa fa-spinner fa-spin fa-fw').css('width','15px');
+
+      $.ajax({
+        url: '/webservices/hops/priority',
+        data: { 'id':id, 'priority':parseInt(priority) },
+        dataType: 'JSON'
+      }).done(function(data){
+        if(priority == '1'){
+          $('#flag-'+id ).attr('class','fa fa-flag text-red');
+        }
+        if(priority == '2'){
+          $('#flag-'+id ).attr('class','fa fa-flag text-orange');
+        }
+        if(priority == '3'){
+          $('#flag-'+id ).attr('class','fa fa-flag text-blue');
+        }
+        if(priority == '0'){
+          $('#flag-'+id ).attr('class','fa fa-flag text-gray');
+        }
+
+        console.log(data);
+      }).fail(function(data){
+        $('#flag-'+id ).attr('class',classe);
+        console.log(data);
+      });
+    });
 
   });
 

@@ -36,6 +36,7 @@ Rails.application.routes.draw do
     post 'hops/edit'
     get 'hops/show'
     get 'hops/show_all'
+    get 'hops/priority'
 
   end
   
