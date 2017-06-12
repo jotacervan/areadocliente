@@ -106,6 +106,15 @@
                                 <% end %>
                               <% end %>
                             </p>
+                            <p>
+                              <%= f.label :prioridade %>
+                              <%= f.select(:priority, {}, {}, {:class => 'form-control'}) do %>
+                                  <%= content_tag(:option, 'Nenhuma', value: 0) %>
+                                  <%= content_tag(:option, 'Alta', value: 1) %>
+                                  <%= content_tag(:option, 'Média', value: 2) %>
+                                  <%= content_tag(:option, 'Baixa', value: 3) %>
+                              <% end %>
+                            </p>
                           </div>
                         </div>
                         
@@ -126,6 +135,7 @@
               <table class="table table-bordered">
                 <tr>
                   <th style="width: 10px">#</th>
+                  <th style="width: 10px">#</th>
                   <th>Passo</th>
                   <th>Recursivo</th>
                   <th>Aprovação</th>
@@ -138,6 +148,7 @@
                 
                 <tr>
                   <td><%= key %>.</td>
+                  <td><% if c.priority == 0 %><i class="fa fa-flag text-gray"></i><% elsif c.priority == 1 %><i class="fa fa-flag text-red"></i><% elsif c.priority == 2 %><i class="fa fa-flag text-orange"></i><% elsif c.priority == 3 %><i class="fa fa-flag text-blue"></i><% end %></td>
                   <td><%= c.name %></td>
                   <td><% if c.recursive %> Sim <% else %> Não <% end %></td>
                   <td><% if c.approved %> <label class="label label-success">Aprovado</label> <% else %> <label class="label label-warning">Pendente</label> <% end %></td>
@@ -169,6 +180,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
+                              <li><a href="<%= admin_approve_path(c.id) %>"><i class="fa fa-check"></i> Aprovado</a></li>
                               <li><a href="#edit-hop-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Passo</a></li>
                               <li><a href="<%= hop_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Passo <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Passo</a></li>
                               <li><a href="#new-comment-<%= c.id %>" data-toggle="modal"><i class="fa fa-commenting-o"></i> Comentar</a></li>
@@ -279,6 +291,31 @@
                                       <%= content_tag(:option, s.name, value: s.id) %>
                                     <% end %>
                                   <% end %>
+                                <% end %>
+                              <% end %>
+                            </p>
+                            <p>
+                              <%= f.label :prioridade %>
+                              <%= f.select(:priority, {}, {}, {:class => 'form-control'}) do %>
+                                <% if c.priority == 0 %>
+                                  <%= content_tag(:option, 'Nenhuma', value: 0, :selected => 'selected') %>
+                                <% else %>
+                                  <%= content_tag(:option, 'Nenhuma', value: 0) %>
+                                <% end %>
+                                <% if c.priority == 1 %>
+                                  <%= content_tag(:option, 'Alta', value: 1, :selected => 'selected') %>
+                                <% else %>
+                                  <%= content_tag(:option, 'Alta', value: 1) %>
+                                <% end %>
+                                <% if c.priority == 2 %>
+                                  <%= content_tag(:option, 'Média', value: 2, :selected => 'selected') %>
+                                <% else %>
+                                  <%= content_tag(:option, 'Média', value: 2) %>
+                                <% end %>
+                                <% if c.priority == 3 %>
+                                  <%= content_tag(:option, 'Baixa', value: 3, :selected => 'selected') %>
+                                <% else %>
+                                  <%= content_tag(:option, 'Baixa', value: 3) %>
                                 <% end %>
                               <% end %>
                             </p>

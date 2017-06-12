@@ -33,7 +33,7 @@ class HomeController < ApplicationController
           u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/stages/'+@hop.stage.id)
         end
         @current_user.backlogs.create(:description => 'Aprovou o item '+@hop.name)
-        
+
         redirect_to client_projects_path(@hop.stage.core.id)
       else
         redirect_to client_projects_path(@hop.stage.core.id)

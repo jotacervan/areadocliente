@@ -32,6 +32,30 @@ class HopsController < ApplicationController
 
   end
 
+  def admin_approve
+    user_authenticate
+    @hop = Hop.find(params[:id])
+    
+    @hop.approved = true
+    @hop.approved_user = @current_user.id
+    if @hop.save
+      if @hop.recursive
+        stage = Stage.find(@hop.next_stage) rescue nil
+        if !stage.nil?
+          stage.hops.create(:name => @hop.name, :recursive => false)
+        end
+        @current_user.backlogs.create(:description => 'Aprovou o item '+@hop.name)
+
+        redirect_to stage_path(@hop.stage.id)
+      else
+        redirect_to stage_path(@hop.stage.id)
+      end
+    else
+      redirect_to stage_path(@hop.stage.id), alert: 'Nao foi possivel aprovar!'
+    end
+    # redirect_to client_projects_path(@hop.stage.core.id)
+  end
+
   def new
   end
 
@@ -56,6 +80,6 @@ class HopsController < ApplicationController
 
   private
     def hop_params
-      params.require(:hop).permit(:name,:status,:recursive,:next_stage,:stage_id)
+      params.require(:hop).permit(:name,:status,:recursive,:next_stage,:stage_id,:priority)
     end
 end

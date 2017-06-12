@@ -34,7 +34,7 @@ class Webservices::HopsController < ApplicationController
 
 	private
 		def hop_params
-			params.require(:hop).permit(:name,:next_stage,:recursive,:picture,:stage_id,:status)
+			params.require(:hop).permit(:name,:next_stage,:recursive,:picture,:stage_id,:status,:priority)
 		end
 
 end

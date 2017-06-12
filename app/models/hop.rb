@@ -13,6 +13,7 @@ class Hop
   field :picture_file_name, type: String
   field :picture_file_size, type: Integer
   field :picture_content_type, type: String
+  field :priority, type: Integer, default: 0
   
   belongs_to :stage
   has_many :comments
