@@ -134,8 +134,8 @@
                         <%= f.hidden_field :stage_id, :value => @stage.id %>
                         
                         <p>
-                          <button type="button" onclick="addImage()" class="btn btn-default">Add Image</button>
                           <%= f.submit( {:class => 'btn btn-primary'}) %>
+                          <button type="button" onclick="addImage()" class="btn btn-default">Add Image</button>
                         </p>
                         
                       <% end %>
@@ -146,7 +146,8 @@
 
             </div>
             <div class="box-body">
-              <table class="table table-bordered">
+              <table id="example2" class="table table-bordered">
+                <thead>
                 <tr>
                   <th style="width: 10px">#</th>
                   <th style="width:170px">Thumb</th>
@@ -157,7 +158,8 @@
                   <th style="width: 40px">Label</th>
                   <th style="width:115px"></th>
                 </tr>
-
+                </thead>
+                <tbody>
                 <% @stage.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
                 <tr>
@@ -166,7 +168,21 @@
                     <% if c.has_image != true %>
                       <label class="label label-default">Nenhum</label>
                     <% else %>
-                      <%= image_tag(c.picture.url(:thumb)) %>
+                      <img src="<%= c.picture.url(:thumb) %>" alt="<%= c.name %>" title="<%= c.name %>" style="cursor:pointer" data-toggle="modal" data-target="#preview-<%= c.id %>" />
+
+                      <div id="preview-<%= c.id %>" class="modal fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title">Image Preview</h4>
+                            </div>
+                              <div class="modal-body text-center">
+                                <img src="<%= c.picture %>" alt="<%= c.name %>" title="<%= c.name %>" style="cursor:pointer; max-width:100%" data-toogle="modal" data-target="#preview-<%= c.id %>" />
+                              </div>
+                          </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                      </div><!-- /.modal -->
                     <% end %>
                   </td>
                   <td><%= c.name %></td>
@@ -363,8 +379,8 @@
                         
                         
                         <p>
-                          <button type="button" class="btn btn-default" onclick="editImage('<%= c.id %>')">Add Image</button>
                           <%= f.submit( {:class => 'btn btn-primary'}) %>
+                          <button type="button" class="btn btn-default" onclick="editImage('<%= c.id %>')">Add Image</button>
                         </p>
                         
                       <% end %>
@@ -375,6 +391,7 @@
 
 
                 <% end %>
+                </tbody>
               </table> 
             </div>
           </div>
@@ -422,6 +439,9 @@
 <!-- datepicker -->
 <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
+
+<script src="/plugins/datatables/jquery.dataTables.js"></script>
+<script src="/plugins/datatables/dataTables.bootstrap.js"></script>
 <script src="/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
 <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
@@ -478,6 +498,7 @@
       e.preventDefault();
     });
 
+    $('#example2').DataTable();
 
     $('.edit_hop').on('submit', function(e){
       
