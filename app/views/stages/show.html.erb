@@ -149,7 +149,7 @@
               <table class="table table-bordered">
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th style="width: 10px">#</th>
+                  <th style="width:170px">Thumb</th>
                   <th>Passo</th>
                   <th>Recursivo</th>
                   <th>Aprovação</th>
@@ -161,8 +161,14 @@
                 <% @stage.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
                 <tr>
-                  <td><%= key %>.</td>
                   <td><% if c.priority == 0 %><i class="fa fa-flag text-gray"></i><% elsif c.priority == 1 %><i class="fa fa-flag text-red"></i><% elsif c.priority == 2 %><i class="fa fa-flag text-orange"></i><% elsif c.priority == 3 %><i class="fa fa-flag text-blue"></i><% end %></td>
+                  <td>
+                    <% if c.has_image != true %>
+                      <label class="label label-default">Nenhum</label>
+                    <% else %>
+                      <%= image_tag(c.picture.url(:thumb)) %>
+                    <% end %>
+                  </td>
                   <td><%= c.name %></td>
                   <td><% if c.recursive %> Sim <% else %> Não <% end %></td>
                   <td><% if c.approved %> <label class="label label-success">Aprovado</label> <% else %> <label class="label label-warning">Pendente</label> <% end %></td>
@@ -283,11 +289,11 @@
                             </p>
                             <p>
                               <%= f.label :horas_estimadas %><br>
-                              <%= f.text_field :estimated_time, :class => 'form-control', :placeholder => 'Horas Estimadas' %>
+                              <%= f.text_field :estimated_time, :class => 'form-control', :value => c.estimated_time %>
                             </p>
                             <p>
                               <%= f.label :versão %><br>
-                              <%= f.text_field :versao, :class => 'form-control', :placeholder => 'Versão' %>
+                              <%= f.text_field :versao, :class => 'form-control', :value => c.versao %>
                             </p>
                             <p>
                               <%= f.label :status_de_0_a_100 %>
@@ -341,13 +347,23 @@
                                 <% end %>
                               <% end %>
                             </p>
+                            <p id="<%= c.id %>" <% if c.has_image != true %> class="hidden" <% end %> >
+                              <%= f.label :imagem %>
+                              <%= f.file_field :picture %>
+                            </p>
                           </div>
                         </div>
                         <%= f.hidden_field :id, :value => c.id %>
                         <%= f.hidden_field :stage_id, :value => @stage.id %>
-                        <%= f.hidden_field :has_image, :value => c.has_image %>
+                        <% if c.has_image != true %>
+                          <%= f.hidden_field :has_image, :id => 'hop_has_image_'+c.id, :value => 0 %>
+                        <% else %>
+                          <%= f.hidden_field :has_image, :id => 'hop_has_image_'+c.id, :value => 1 %>
+                        <% end %>
+                        
                         
                         <p>
+                          <button type="button" class="btn btn-default" onclick="editImage('<%= c.id %>')">Add Image</button>
                           <%= f.submit( {:class => 'btn btn-primary'}) %>
                         </p>
                         
@@ -423,6 +439,15 @@
       $('#hop_has_image').val(0);
     }
     $('.addImage').toggleClass('hidden');
+  }
+
+  function editImage(str){
+    if($('#hop_has_image_'+str).val() == 0 || $('#hop_has_image_'+str).val() == "false"){
+      $('#hop_has_image_'+str).val(1);
+    }else{
+      $('#hop_has_image_'+str).val(0);
+    }
+    $('#'+str).toggleClass('hidden'); 
   }
 
   $(function(){
