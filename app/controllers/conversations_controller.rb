@@ -1,7 +1,7 @@
 class ConversationsController < ApplicationController
 
   before_action :user_authenticate
-
+  
   def index
   end
 
