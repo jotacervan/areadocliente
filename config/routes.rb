@@ -9,9 +9,6 @@ Rails.application.routes.draw do
   resources :cores
   resources :stages
   resources :hops
-  resources :conversations
-  resources :messages
-  resources :pictures
 
   get 'login' => 'home#login', as: :login
   post 'signin' => 'home#signin', as: :signin

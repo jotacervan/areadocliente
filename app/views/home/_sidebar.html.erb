@@ -47,19 +47,6 @@
             <li <% if request.fullpath == '/users' %> class="active" <% end %> ><a href="<%= users_path %>"><i class="fa fa-user"></i> Ver Usuários</a></li>
           </ul>
         </li>
-        <li <% if request.fullpath == '/conversations' || request.fullpath == '/conversations/new' || request.fullpath == '/conversations/show' %> class="active treeview" <% else %> class="treeview" <% end %> >
-          <a href="#">
-            <i class="fa fa-comments"></i>
-            <span>Mensagens</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li <% if request.fullpath == '/conversations/new' %> class="active" <% end %> ><a href="<%= new_conversation_path %>"><i class="fa fa-commenting"></i> Nova Mensagem</a></li>
-            <li <% if request.fullpath == '/conversations' %> class="active" <% end %> ><a href="<%= conversations_path %>"><i class="fa fa-comments"></i> Mensagens</a></li>
-          </ul>
-        </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-laptop"></i>
