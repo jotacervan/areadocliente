@@ -1,40 +1,26 @@
 class CustomersController < ApplicationController
+  before_action :user_authenticate
+
   def index
-  	if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
-  	else
   	  	@current_user = User.find(session[:user_id])
   	  	@customers = Customer.all
-  	end
   end
 
   def new
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
         @current_user = User.find(session[:user_id])
         @customer = Customer.new
-    end
   end
 
   def show
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
         @user = User.new
         @current_user = User.find(session[:user_id])
         @customer = Customer.find(params[:id])
         @core = Core.new
-    end
   end
 
   def edit
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
         @current_user = User.find(session[:user_id])
         @customer = Customer.find(params[:id])
-    end
   end
 
   def create

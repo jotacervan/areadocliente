@@ -1,49 +1,30 @@
 class UsersController < ApplicationController
+	before_action :user_authenticate
 
 	def index 
-		if session[:user_id].nil?
-  			redirect_to login_path, alert: 'Faça o login para continuar'
-	  	else
-		  	@current_user = User.find(session[:user_id])
 		  	@users = User.all
-	  	end
 	end
 	
 	def new
-		if session[:user_id].nil?
-  			redirect_to login_path, alert: 'Faça o login para continuar'
-	  	else
-		  	@current_user = User.find(session[:user_id])
 		  	@user = User.new
 		  	@users = User.all
 		  	@customers = Customer.all
-	  	end
 	end
 
 	def edit
-		if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
-	  	else
 		  	@user = User.find(params[:id])
-		  	@current_user = User.find(session[:user_id])
 		  	@users = User.all
 		  	@customers = Customer.all
-	  	end
 	end
 
 	def show
-		if session[:user_id].nil?
-  		redirect_to login_path, alert: 'Faça o login para continuar'
-	  	else
 		  	@user = User.find(params[:id])
-		  	@current_user = User.find(session[:user_id])
 		  	@users = User.all
-	  	end
 	end
 	
 	def update
 	    @user = User.find(params[:id])
-	    @current_user = User.find(session[:user_id])
+	    
 	 
 	    if @user.update(user_params)
 	      @current_user.backlogs.create(:description => 'Atualização do usuário ' + @user.name)
@@ -58,7 +39,6 @@ class UsersController < ApplicationController
 		@user = User.new(user_params)
 
 		if @user.save
-			@current_user = User.find(session[:user_id])
 			@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
 			if(params[:user][:redirect] == 'clients')
 				redirect_to customer_path(@user.customer)
@@ -74,7 +54,6 @@ class UsersController < ApplicationController
 
 	def destroy
 	    @user = User.find(params[:id])
-	    @current_user = User.find(session[:user_id])
 	 	@current_user.backlogs.create(:description => 'Exclusão do usuário ' + @user.name)
 	 	
 	    @user.destroy

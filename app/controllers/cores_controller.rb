@@ -1,4 +1,7 @@
 class CoresController < ApplicationController
+
+  before_action :user_authenticate
+
   def index
     render json: 'Cores'
   end
@@ -8,13 +11,10 @@ class CoresController < ApplicationController
   end
   
   def show
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
+    
         @current_user = User.find(session[:user_id])
         @core = Core.find(params[:id])
         @stage = Stage.new
-    end
   end
 
   def edit

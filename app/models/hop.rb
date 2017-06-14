@@ -5,7 +5,7 @@ class Hop
 
   field :name, type: String
   field :status, type: Integer, default: 0
-  field :recursive, type: Mongoid::Boolean
+  field :recursive, type: Mongoid::Boolean, default: false
   field :next_stage, type: String
   field :approved, type: Mongoid::Boolean, default: false
   field :approved_user, type: String
@@ -16,6 +16,7 @@ class Hop
   field :priority, type: Integer, default: 0
   field :estimated_time, type: String
   field :versao, type: String
+  field :cleared, type: Mongoid::Boolean, default: false
   
   belongs_to :stage
   has_many :comments
@@ -31,6 +32,15 @@ class Hop
   validates_attachment_content_type :picture, :content_type => ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']
   
   after_update :update_stage_status
+  after_create :send_notification
+
+  def send_notification
+    if self.cleared != true
+      User.where(:user_type => 'superUser').each do |u|
+        u.notifications.create(:description => 'Há uma nova solicitação de '+self.stage.core.customer.name, :icon => 'fa-bell text-red', :link => '/stages/'+self.stage.id)
+      end
+    end
+  end
 
   def update_stage_status
       

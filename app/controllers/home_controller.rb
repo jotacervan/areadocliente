@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
+  before_action :user_authenticate, except: [:login, :signin]
+
   def index
-  	user_authenticate
     @backlogs = Backlog.order(created_at: :desc)
     @updates = Hop.order(created_at: :desc).limit(5)
     if !@current_user.nil? && @current_user.user_type == 'User'
@@ -20,7 +21,6 @@ class HomeController < ApplicationController
   end
 
   def approve
-    user_authenticate
     @hop = Hop.find(params[:id])
     
     @hop.approved = true
@@ -45,19 +45,19 @@ class HomeController < ApplicationController
   end
 
   def client
-    user_authenticate
     if !@current_user.nil? && @current_user.user_type != 'User'
       redirect_to root_path
     end
   end
 
   def client_projects
-    user_authenticate
     @project = Core.find(params[:id]) rescue nil
-
+    @hop = Hop.new
     if @project.nil?
       redirect_to root_path, notice: 'Item não se encontra mais em nosso registro!'
     end
+
+
   end
 
   def new_comment
@@ -71,9 +71,6 @@ class HomeController < ApplicationController
   end
 
   def login
-  	if !session[:user_id].nil?
-  		redirect_to root_path
-  	end
   end
 
   def sign_out
@@ -93,7 +90,6 @@ class HomeController < ApplicationController
   end
 
   def profile
-    user_authenticate
     @user = User.find(session[:user_id])
   end
 

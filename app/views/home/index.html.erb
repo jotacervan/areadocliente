@@ -128,7 +128,6 @@
               <table class="table table-bordered">
                 <tr>
                   <th>Tarefa</th>
-                  <th>Estágio</th>
                   <th>Projeto</th>
                   <th>Cliente</th>
                   <th>Progresso</th>
@@ -137,7 +136,6 @@
                 <% @updates.each do |u| %>
                   <tr>
                   <td><%= u.name %></td>
-                  <td><%= u.stage.name %></td>
                   <td><%= u.stage.core.name %></td>
                   <td><%= u.stage.core.customer.name %></td>
                   <td>

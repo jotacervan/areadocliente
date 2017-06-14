@@ -15,13 +15,14 @@ class User
   field :picture_content_type, type: String
   field :login, type: String
   field :user_type, type: String
-
+  
   has_secure_password
   
   belongs_to :customer, optional: true
   has_many :backlogs, dependent: :destroy
   has_many :notifications, dependent: :destroy
-  has_many :comments
+  has_many :comments, dependent: :destroy
+  has_many :messages, dependent: :destroy
   
   after_create :welcome_notification
 

@@ -1,10 +1,10 @@
 class StagesController < ApplicationController
+  before_action :user_authenticate
   def index
     #
   end
 
   def create
-    user_authenticate
     @stage = Stage.new(stage_params)
 
     if @stage.save
@@ -22,14 +22,9 @@ class StagesController < ApplicationController
   end
 
   def show
-    if session[:user_id].nil?
-      redirect_to login_path, alert: 'Faça o login para continuar'
-    else
-        @current_user = User.find(session[:user_id])
         @stage = Stage.find(params[:id])
         @stages = @stage.core.stages
         @hop = Hop.new
-    end
   end
 
   def update

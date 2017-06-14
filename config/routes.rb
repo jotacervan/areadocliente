@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   resources :cores
   resources :stages
   resources :hops
+  resources :conversations
+  resources :messages
+  resources :pictures
 
   get 'login' => 'home#login', as: :login
   post 'signin' => 'home#signin', as: :signin
@@ -19,11 +22,12 @@ Rails.application.routes.draw do
   post 'profile_password_update' => 'home#profile_password_update', as: :profile_password_update
   get 'redirect_notification/:id' => 'home#redirect_notification', as: :redirect_notification
   get 'admin_approve/:id' => 'hops#admin_approve', as: :admin_approve
-
+  
   # CLIENT ROUTES
   get 'client_dashboard' => 'home#client', as: :client_dashboard
   get 'client_projects/:id' => 'home#client_projects', as: :client_projects
   get 'approve/:id' => 'home#approve', as: :approve
+  post 'hop_solicitation' => 'hops#solicitation', as: :hop_solicitation
   # CLIENT ROUTES
   
   # COMMENT ROUTES

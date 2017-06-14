@@ -131,6 +131,7 @@
                         </div>
 
                         <%= f.hidden_field :has_image, :value => 0 %>
+                        <%= f.hidden_field :cleared, :value => 1 %>
                         <%= f.hidden_field :stage_id, :value => @stage.id %>
                         
                         <p>
@@ -162,7 +163,7 @@
                 <tbody>
                 <% @stage.hops.order(created_at: :asc).each_with_index do |c,key| %>
                 
-                <tr>
+                <tr <% if c.cleared != true %> style="background: rgba(243, 18, 18, 0.12)" <% end %> >
                   <td><% if c.priority == 0 %><i class="fa fa-flag text-gray"></i><% elsif c.priority == 1 %><i class="fa fa-flag text-red"></i><% elsif c.priority == 2 %><i class="fa fa-flag text-orange"></i><% elsif c.priority == 3 %><i class="fa fa-flag text-blue"></i><% end %></td>
                   <td>
                     <% if c.has_image != true %>
@@ -370,6 +371,7 @@
                           </div>
                         </div>
                         <%= f.hidden_field :id, :value => c.id %>
+                        <%= f.hidden_field :cleared, :value => 1 %>
                         <%= f.hidden_field :stage_id, :value => @stage.id %>
                         <% if c.has_image != true %>
                           <%= f.hidden_field :has_image, :id => 'hop_has_image_'+c.id, :value => 0 %>

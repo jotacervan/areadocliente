@@ -1,9 +1,10 @@
 class HopsController < ApplicationController
+  before_action :user_authenticate
+
   def index
   end
 
   def create
-    user_authenticate
     if params[:hop][:recursive] == '1'
       if params[:hop][:next_stage] == 'não'
         redirect_to stage_path(params[:hop][:stage_id]), notice: 'Para ser recursivo você precisa escolhar o próximo estágio'
@@ -32,8 +33,35 @@ class HopsController < ApplicationController
 
   end
 
+  def solicitation
+    if params[:hop][:recursive] == '1'
+      if params[:hop][:next_stage] == 'não'
+        redirect_to stage_path(params[:hop][:stage_id]), notice: 'Para ser recursivo você precisa escolhar o próximo estágio'
+      else
+        @hop = Hop.new(hop_params)
+
+        if @hop.save
+          @current_user.backlogs.create(:description => 'Nova Solicitação: ' + @hop.name)
+          redirect_to client_projects_path(@hop.stage.core), notice: 'Solicitação enviada com Sucesso'
+        else
+          redirect_to client_projects_path(@hop.stage.core), notice: 'Erro ao enviar solicitação'
+        end
+      end
+    else
+      
+      @hop = Hop.new(hop_params)
+
+      if @hop.save
+        @current_user.backlogs.create(:description => 'Nova Solicitação: ' + @hop.name)
+        redirect_to client_projects_path(@hop.stage.core), notice: 'Solicitação enviada com Sucesso'
+      else
+        redirect_to client_projects_path(@hop.stage.core), notice: 'Erro ao enviar solicitação'
+      end
+
+    end
+  end
+
   def admin_approve
-    user_authenticate
     @hop = Hop.find(params[:id])
     
     @hop.approved = true
@@ -69,8 +97,6 @@ class HopsController < ApplicationController
   end
 
   def destroy
-    user_authenticate
-    
     hop = Hop.find(params[:id])
     stage = hop.stage.id
     @current_user.backlogs.create(:description => 'Deletou o item ' + hop.name)
@@ -80,6 +106,6 @@ class HopsController < ApplicationController
 
   private
     def hop_params
-      params.require(:hop).permit(:name,:next_stage,:recursive,:picture,:stage_id,:status,:priority,:priority,:estimated_time,:versao,:has_image,:picture)
+      params.require(:hop).permit(:name,:next_stage,:recursive,:picture,:stage_id,:status,:priority,:priority,:estimated_time,:versao,:has_image,:picture,:cleared)
     end
 end
