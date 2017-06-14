@@ -395,6 +395,15 @@
 <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
   
+  function addImage(){
+    if($('#hop_has_image').val() == 0){
+      $('#hop_has_image').val(1);
+    }else{
+      $('#hop_has_image').val(0);
+    }
+    $('.addImage').toggleClass('hidden');
+  }
+  
   $(function(){
 
     $('.new-image').on('click', function(){
