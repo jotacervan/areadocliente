@@ -22,7 +22,6 @@ class User
   has_many :backlogs, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :comments, dependent: :destroy
-  has_many :messages, dependent: :destroy
   
   after_create :welcome_notification
 
