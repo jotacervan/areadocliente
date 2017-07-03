@@ -1,2 +1,254 @@
-<h1>Hops#show</h1>
-<p>Find me in app/views/hops/show.html.erb</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Mobile2you | Perfil de Usuário</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/font-awesome-4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+  <style type="text/css">
+    .profile-user-img:hover{
+      opacity:0.5;
+      cursor:pointer;
+    }
+  </style>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <%= render 'home/header' %>
+  
+  <%= render 'home/sidebar' %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Passo
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="<%= stage_path(@hop.stage.id) %>"><i class="fa fa-dashboard"></i> Estágio</a></li>
+        <li class="active">Passos</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+            	<div class="text-center">
+	            	<% if @hop.has_image != true %>
+	            		<label class="label label-default">No image</label><br>
+	            	<% else %>
+	            		<img src="<%= @hop.picture.url(:thumb) %>" alt="<%= @hop.name %>" title="<%= @hop.name %>"><br>
+	            	<% end %>
+              	</div><br>
+
+              <h3 class="profile-username text-center"><%= @hop.name %></h3>
+
+              <p class="text-muted text-center">Criado <%= @hop.created_at.strftime('%d de %h, %Y') %></p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Criado por</b> 
+                  <% if @hop.user.nil? %>
+                    <span class="pull-right">Administrador</span>
+                  <% else %>
+                    <span class="pull-right"><%= @hop.user.name %></span>
+                  <% end %>
+                </li>
+                <li class="list-group-item">
+                  <b>Status</b> 
+                   <span class="pull-right"><% if @hop.approved %> <label class="label label-success">Aprovado</label> <% else %> <label class="label label-warning">Pendente</label> <% end %></span>
+                </li>
+              </ul>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#timeline" data-toggle="tab">Comentários</a></li>
+              <li><a href="#comment" data-toggle="tab">Novo Comentário</a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- /.tab-pane -->
+              <div class=" active tab-pane" id="timeline">
+              	<% if @hop.comments.count > 0 %>
+                <!-- The timeline -->
+                <ul class="timeline timeline-inverse">
+                  <% @hop.comments.order(created_at: :desc).each do |b| %>
+                     <!-- timeline time label -->
+                    <li class="time-label">
+                          <span class="bg-blue">
+                            <%= b.created_at.strftime('%d %h, %Y') %>
+                          </span>
+                    </li>
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                      <i class="fa fa-comment-o bg-blue"></i>
+
+                      <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> <%= b.created_at.strftime('%H:%I') %></span>
+
+                        <h3 class="timeline-header"><strong><%= b.user.name %></strong> comentou</h3>
+                        <div class="timeline-body">
+                        	<p><%= b.comment %></p>
+                        	<% if b.has_image == true %>
+                        		<img src="<%= b.picture.url(:thumb) %>" alt="<%= b.comment %>" title="<%= b.comment %>" />
+                        	<% end %>
+                        </div>
+
+                      </div>
+                    </li>
+                    <!-- END timeline item -->
+                  <% end %>
+                 
+                  
+                  <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                  </li>
+                </ul>
+                <% else %>
+                	<div class="alert alert-info">Nenhum comentário disponível</div>
+                <% end %>
+              </div>
+              <!-- /.tab-pane -->
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="comment">
+              		<%= form_for :comment, url: new_comment_path do |f| %>
+                        
+                          <%= f.label :comentário %>
+                          <%= f.text_area :comment, :class => 'form-control', :placeholder => 'Comentário' %>
+                          <%= f.hidden_field :has_image,  :value => 0 %><br>
+                          <%= f.hidden_field :hop_id, :value => @hop.id %>
+                          <%= f.hidden_field :user_id, :value => @current_user.id %>
+                          <button type="button" class="btn btn-default new-image"><i class="fa fa-paperclip"></i> Inserir imagem de anexo</button>
+                          <br>
+                          <div class="image hidden">
+                            <br>
+                            <%= f.file_field :picture %>
+                          </div>
+                          <br>
+                        	
+                          <button type="submit" class="btn btn-primary">Comentar</button>
+                        
+                      <% end %>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.3.8
+    </div>
+    <strong>Copyright &copy; 2017 <a href="http://mobile2you.com.br">Mobile2You</a>.</strong> All rights
+    reserved.
+  </footer>
+
+ 
+</div>
+
+<div id="profile" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Imagem de Perfil</h4>
+      </div>
+      <%= form_for :user, url: profile_pic_update_path do |f| %>
+      <div class="modal-body">
+        <%= f.hidden_field :id %>
+        <%= f.file_field :picture %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <%= f.submit 'Alterar Imagem', :class => 'btn btn-primary' %>
+      </div>
+      <% end %>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ./wrapper -->
+<% if flash[:alert] %>
+    <div id="flash" class="modal modal-warning fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Alerta</h4>
+          </div>
+          <div class="modal-body">
+            <p><%= flash[:alert] %></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+<% end %>
+
+<!-- jQuery 2.2.3 -->
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/dist/js/demo.js"></script>
+
+<% if flash[:alert] %>
+  <script type="text/javascript">
+    $(function(){
+      $('#flash').modal('show');
+    });
+  </script>
+<% end %>
+
+</body>
+</html>

@@ -217,6 +217,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
                           <ul class="dropdown-menu" role="menu">
+                              <li><a href="<%= hop_path(c.id) %>"><i class="fa fa-eye"></i> Visualizar</a></li>
                               <li><a href="<%= admin_approve_path(c.id) %>"><i class="fa fa-check"></i> Aprovado</a></li>
                               <li><a href="#edit-hop-<%= c.id %>" data-toggle="modal"><i class="fa fa-pencil"></i> Editar Passo</a></li>
                               <li><a href="<%= hop_path(c.id) %>" data-confirm="Tem certeza que deseja deletar o Passo <%= c.name %>?" data-method="delete" rel="nofollow"><i class="fa fa-trash"></i> Deletar Passo</a></li>

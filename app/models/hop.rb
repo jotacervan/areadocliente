@@ -20,6 +20,7 @@ class Hop
   
   belongs_to :stage
   has_many :comments
+  belongs_to :user, optional: :true
 
   has_mongoid_attached_file :picture, 
     :styles => { :medium => "320x320>", :thumb => "160x160#" },
@@ -33,11 +34,11 @@ class Hop
   
   after_update :update_stage_status
   after_create :send_notification
-
+  
   def send_notification
     if self.cleared != true
       User.where(:user_type => 'superUser').each do |u|
-        u.notifications.create(:description => 'Há uma nova solicitação de '+self.stage.core.customer.name, :icon => 'fa-bell text-red', :link => '/stages/'+self.stage.id)
+        u.notifications.create(:description => 'Há uma nova solicitação de '+self.stage.core.customer.fantasy_name, :icon => 'fa-bell text-red', :link => '/stages/'+self.stage.id)
       end
     end
   end

@@ -28,7 +28,7 @@ class CustomersController < ApplicationController
     @current_user = User.find(session[:user_id])
 
     if @customer.save
-      @current_user.backlogs.create(:description => 'Criação do cliente ' + @customer.name)
+      @current_user.backlogs.create(:description => 'Criação do cliente ' + @customer.fantasy_name)
       redirect_to @customer
     else
       render 'new'
@@ -40,7 +40,7 @@ class CustomersController < ApplicationController
     @current_user = User.find(session[:user_id])
 
     if @customer.update(clients_params)
-      @current_user.backlogs.create(:description => 'Atualização do cliente ' + @customer.name)
+      @current_user.backlogs.create(:description => 'Atualização do cliente ' + @customer.fantasy_name)
       redirect_to @customer
     else
       @current_user = User.find(session[:user_id])
@@ -51,7 +51,7 @@ class CustomersController < ApplicationController
   def destroy
       @customer = Customer.find(params[:id])
       @current_user = User.find(session[:user_id])
-      @current_user.backlogs.create(:description => 'Exclusão do cliente ' + @customer.name)
+      @current_user.backlogs.create(:description => 'Exclusão do cliente ' + @customer.fantasy_name)
     
       @customer.destroy
 
