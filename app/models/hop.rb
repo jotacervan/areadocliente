@@ -34,15 +34,15 @@ class Hop
   
   after_update :update_stage_status
   after_create :send_notification
-  
+
   def send_notification
     if self.cleared != true
       User.where(:user_type => 'superUser').each do |u|
-        u.notifications.create(:description => 'Há uma nova solicitação de '+self.stage.core.customer.fantasy_name, :icon => 'fa-bell text-red', :link => '/stages/'+self.stage.id)
+        u.notifications.create(:description => 'Há uma nova solicitação de '+self.stage.core.customer.fantasy_name, :icon => 'fa-bell text-red', :link => '/hops/'+self.id)
       end
     end
   end
-
+  
   def update_stage_status
       
     if self.stage.hops.count > 0
@@ -65,7 +65,7 @@ class Hop
 
   def send_approve_notification
     self.stage.core.customer.users.each do |u|
-      u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/client_projects/'+self.stage.core.id)
+      u.notifications.create(:description => 'Há um novo item aguardando sua aprovação', :icon => 'fa-check-square-o text-red', :link => '/hops/'+self.id)
     end
   end
 

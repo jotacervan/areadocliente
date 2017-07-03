@@ -81,8 +81,24 @@
                   <% end %>
                 </li>
                 <li class="list-group-item">
+                  <b>Percentil</b> 
+                   <span class="pull-right">
+                   	    <% if @hop.status < 33 %>
+	                      <span class="badge bg-red"><%= @hop.status %>%</span>
+	                    <% elsif @hop.status < 66 %>
+	                      <span class="badge bg-orange"><%= @hop.status %>%</span>
+	                    <% else %>
+	                      <span class="badge bg-green"><%= @hop.status %>%</span>
+	                    <% end %>
+                   </span>
+                </li>
+                <li class="list-group-item">
                   <b>Status</b> 
                    <span class="pull-right"><% if @hop.approved %> <label class="label label-success">Aprovado</label> <% else %> <label class="label label-warning">Pendente</label> <% end %></span>
+                </li>
+                <li class="list-group-item">
+                  <b>Recursivo</b> 
+                   <span class="pull-right"><% if @hop.recursive %> Sim <% else %> Não <% end %></span>
                 </li>
               </ul>
             </div>
@@ -246,6 +262,34 @@
   <script type="text/javascript">
     $(function(){
       $('#flash').modal('show');
+
+      	$('.new-image').on('click', function(){
+      		alert('teste');
+	      $(this).parent().children('div').removeClass('hidden');
+	      $(this).parent().children('#comment_has_image').val(1);
+	    });
+      	
+      $('[action="/new_comment_path"]').on('submit', function(e){
+      $('body').prepend('<div id="overlay" style="position:fixed; z-index:999999; display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:rgba(0,0,0,0.5); color:#fff;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+      $.ajax({
+        method: 'POST',
+        url: '/new_comment_path',
+        data: new FormData(this),
+        dataType: 'JSON',
+        processData: false,
+        contentType: false,
+      }).done(function(data){
+        alert(data.message);
+        console.log(data);
+        location.reload();
+      }).fail(function(data){
+        $('#overlay').remove();
+        alert('Erro, tente novamente mais tarde');
+        console.log(data);
+      });
+      e.preventDefault();
+    });
+
     });
   </script>
 <% end %>

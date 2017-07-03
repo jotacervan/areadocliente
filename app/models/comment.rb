@@ -27,11 +27,11 @@ class Comment
   def send_notification
     if self.user.user_type == 'User'
       User.where(:user_type => 'superUser').each do |u|
-        u.notifications.create(:description => self.user.name+' comentou o item '+self.hop.name, :icon => 'fa fa-comment-o text-green', :link => '/stages/'+self.hop.stage.id)
+        u.notifications.create(:description => self.user.name+' comentou o item '+self.hop.name, :icon => 'fa fa-comment-o text-green', :link => '/hops/'+self.hop.id)
       end
     else
       self.user.customer.users.each do |u|
-        u.notifications.create(:description => self.user.name+' comentou o item '+self.hop.name, :icon => 'fa fa-comment-o text-green', :link => '/client_projects/'+self.hop.stage.core.id)
+        u.notifications.create(:description => self.user.name+' comentou o item '+self.hop.name, :icon => 'fa fa-comment-o text-green', :link => '/hops/'+self.hop.id)
       end
     end
   end
