@@ -91,6 +91,7 @@ class HopsController < ApplicationController
   end
 
   def show
+    @hop = Hop.find(params[:id])
   end
 
   def update

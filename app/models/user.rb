@@ -28,7 +28,7 @@ class User
   def welcome_notification
     self.notifications.create(:description => 'Seja bem vindo '+self.name+', entre em seu perfil para completar seu cadastro', :icon => 'fa-handshake-o text-green', :link => '/profile')
   end
-
+  
   has_mongoid_attached_file :picture, 
     :styles => { :medium => "320x320>", :thumb => "160x160#" },
     :storage        => :s3,

@@ -2,6 +2,7 @@ class Customer
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  field :fantasy_name, type: String
   field :name, type: String
   field :phone, type: String
   field :contract, type: String

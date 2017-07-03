@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   apipie
 
   root 'home#index'
-
+  
   resources :users
   resources :customers
   resources :cores
