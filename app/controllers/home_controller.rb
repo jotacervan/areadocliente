@@ -19,7 +19,7 @@ class HomeController < ApplicationController
       redirect_to notif.link
     end
   end
-
+  
   def approve
     @hop = Hop.find(params[:id])
     
@@ -30,7 +30,7 @@ class HomeController < ApplicationController
         stage = Stage.find(@hop.next_stage)
         stage.hops.create(:name => @hop.name, :recursive => false)
         User.where(:user_type => 'superUser').each do |u|
-          u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/stages/'+@hop.stage.id)
+          u.notifications.create(:description => @current_user.name+' aprovou um item', :icon => 'fa-check text-green', :link => '/hops/'+@hop.id)
         end
         @current_user.backlogs.create(:description => 'Aprovou o item '+@hop.name)
 

@@ -63,7 +63,7 @@
 	            	<% if @hop.has_image != true %>
 	            		<label class="label label-default">No image</label><br>
 	            	<% else %>
-	            		<img src="<%= @hop.picture.url(:thumb) %>" alt="<%= @hop.name %>" title="<%= @hop.name %>"><br>
+	            		<img src="<%= @hop.picture.url(:thumb) %>" style="cursor:pointer" data-toggle="modal" data-target="#preview" alt="<%= @hop.name %>" title="<%= @hop.name %>"><br>
 	            	<% end %>
               	</div><br>
 
@@ -192,6 +192,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>Version</b> 2.3.8
@@ -200,26 +201,39 @@
     reserved.
   </footer>
 
- 
 </div>
 
-<div id="profile" class="modal fade" tabindex="-1" role="dialog">
+<div id="aprovacao" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Imagem de Perfil</h4>
+        <h4 class="modal-title">TERMO DE APROVAÇÃO E ANUÊNCIA</h4>
       </div>
-      <%= form_for :user, url: profile_pic_update_path do |f| %>
       <div class="modal-body">
-        <%= f.hidden_field :id %>
-        <%= f.file_field :picture %>
+        <p class="text-justify"><%= @current_user.customer.name %>, com sede na Rua <%= @current_user.customer.street %>, inscrita no CNPJ/MF sob o nº <%= @current_user.customer.cnpj %>, neste ato representada pelo Sr. <%= @current_user.name %>, portador da cédula de identidade nº <%= @current_user.rg %> e inscrito no CPF/MF sob o nº <%= @current_user.cpf %>, declara a quem possa interessar e para os devidos fins de direito a ciência e anuência do desenvolvimento da etapa "<%= @hop.name %>" correspondente ao estágio "<%= @hop.stage.name %>" do projeto, podendo a CONTRATADA dar continuidade às etapas subsequentes do projeto, nos estritos termos do Contrato de Prestação de Serviços nº <%= @current_user.customer.contract %>.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <%= f.submit 'Alterar Imagem', :class => 'btn btn-primary' %>
+        <button type="button" onclick="javascript: location.href='<%= approve_path(@hop.id) %>'" class="btn btn-primary">Aprovar</button>
       </div>
-      <% end %>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="preview" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Imagem</h4>
+      </div>
+      <div class="modal-body">
+        <img src="<%= @hop.picture %>" style="width:100%" alt="Preview" title="Preview">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -268,7 +282,7 @@
 	      $(this).parent().children('div').removeClass('hidden');
 	      $(this).parent().children('#comment_has_image').val(1);
 	    });
-      	
+
       $('[action="/new_comment_path"]').on('submit', function(e){
       $('body').prepend('<div id="overlay" style="position:fixed; z-index:999999; display:flex; align-items:center; justify-content:center; width:100%; height:100%; background:rgba(0,0,0,0.5); color:#fff;"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
       $.ajax({
