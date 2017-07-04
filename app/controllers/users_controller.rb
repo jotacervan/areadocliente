@@ -20,7 +20,6 @@ class UsersController < ApplicationController
 	def show
 		  	@user = User.find(params[:id])
 		  	@users = User.all
-		  	SystemMailer.welcome_email(@user).deliver
 	end
 	
 	def update
@@ -38,13 +37,14 @@ class UsersController < ApplicationController
 	  
 	def create
 		@user = User.new(user_params)
-		
+
 		if @user.save
 			@current_user.backlogs.create(:description => 'Criação do usuário ' + @user.name)
+			SystemMailer.welcome_email(@user,params[:user][:password]).deliver
 			if(params[:user][:redirect] == 'clients')
 				redirect_to customer_path(@user.customer)
 			else
-				redirect_to @user	
+				redirect_to users_path
 			end
 		else
 			@customers = Customer.all
