@@ -71,7 +71,7 @@
                   <% if @current_user.customer.nil? %>
                     <span class="pull-right">Administrador</span>
                   <% else %>
-                    <span class="pull-right"><%= @current_user.customer.name %></span>
+                    <span class="pull-right"><%= @current_user.customer.fantasy_name %></span>
                   <% end %>
                 </li>
               </ul>
