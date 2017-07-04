@@ -63,7 +63,7 @@ class HopsController < ApplicationController
 
   def admin_approve
     @hop = Hop.find(params[:id])
-    
+      
     @hop.approved = true
     @hop.approved_user = @current_user.id
     if @hop.save
@@ -107,6 +107,6 @@ class HopsController < ApplicationController
 
   private
     def hop_params
-      params.require(:hop).permit(:name,:next_stage,:recursive,:picture,:stage_id,:status,:priority,:priority,:estimated_time,:versao,:has_image,:picture,:cleared)
+      params.require(:hop).permit(:name,:next_stage,:deadline,:recursive,:picture,:stage_id,:status,:priority,:priority,:estimated_time,:versao,:has_image,:picture,:cleared)
     end
 end

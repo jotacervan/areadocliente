@@ -100,6 +100,10 @@
                               <%= f.number_field :status, :class => 'form-control', :placeholder => 'Status' %>
                             </p>
                             <p>
+                              <%= f.label :deadline %>
+                              <%= f.text_field :deadline, :class => 'form-control deadline', :value => 'Deadline' %>
+                            </p>
+                            <p>
                               <%= f.check_box :recursive %> &nbsp;
                               <%= f.label :recursive %>
                             </p>
@@ -318,6 +322,10 @@
                               <%= f.number_field :status, :class => 'form-control', :value => c.status %>
                             </p>
                             <p>
+                              <%= f.label :deadline %>
+                              <%= f.text_field :deadline, :class => 'form-control deadline', :value => c.deadline %>
+                            </p>
+                            <p>
                               <% if c.recursive %>
                                 <%= f.check_box :recursive, :checked => true %> &nbsp;
                               <% else %>
@@ -474,6 +482,10 @@
   }
 
   $(function(){
+
+    $('.deadline').datepicker({
+      format: 'dd/mm/yyyy'
+    });
 
     $('.new-image').on('click', function(){
       $(this).parent().children('div').removeClass('hidden');

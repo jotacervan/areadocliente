@@ -10,6 +10,7 @@ class Hop
   field :approved, type: Mongoid::Boolean, default: false
   field :approved_user, type: String
   field :has_image, type: Mongoid::Boolean, default: false
+  field :deadline, type: String, default: ''
   field :picture_file_name, type: String
   field :picture_file_size, type: Integer
   field :picture_content_type, type: String
